@@ -1,0 +1,1082 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400&display=swap');
+
+  :root {
+    --gold: #B8952A;
+    --gold-dim: #8A6E1F;
+    --gold-faint: rgba(184,149,42,0.12);
+    --gold-glow: rgba(184,149,42,0.22);
+    --surface: #0A0A09;
+    --surface-2: #111110;
+    --surface-3: #191918;
+    --surface-4: #222220;
+    --text-primary: #F0EDE6;
+    --text-secondary: #9A9790;
+    --text-dim: #5A5854;
+    --border: rgba(255,255,255,0.06);
+    --border-gold: rgba(184,149,42,0.3);
+    --red: #C94040;
+    --red-bg: rgba(201,64,64,0.1);
+    --green: #3D8C5E;
+    --green-bg: rgba(61,140,94,0.1);
+    --amber: #C47D1A;
+    --amber-bg: rgba(196,125,26,0.1);
+    --blue: #3A6EA8;
+    --blue-bg: rgba(58,110,168,0.1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  #ran-root {
+    font-family: 'DM Mono', monospace;
+    background: var(--surface);
+    color: var(--text-primary);
+    min-height: 580px;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .status-dot.active { background: var(--gold); }
+  .status-dot.done { background: var(--green); animation: none; }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .main-area {
+    padding: 28px 24px 24px;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* IDLE SCREEN */
+  .idle-header {
+    text-align: center;
+    padding: 12px 0 28px;
+  }
+
+  .idle-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+  }
+
+  .idle-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .idle-sub {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  .context-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .context-card {
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .context-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .context-card:hover { background: var(--surface-4); border-color: var(--border-gold); }
+  .context-card:hover::before { opacity: 1; }
+  .context-card.selected { background: var(--gold-faint); border-color: var(--border-gold); }
+  .context-card.selected::before { opacity: 1; }
+
+  .ctx-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .ctx-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .activate-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--gold);
+    border: none;
+    border-radius: 8px;
+    color: #0A0A09;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+    font-weight: 400;
+  }
+
+  .activate-btn:hover { background: #D4AB35; transform: translateY(-1px); }
+  .activate-btn:active { transform: translateY(0); }
+  .activate-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* STEP SCREEN */
+  .step-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .step-counter {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .step-counter span {
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin: 0 16px;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+
+  .abort-btn {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .abort-btn:hover { color: var(--text-secondary); background: var(--surface-3); }
+
+  .step-content {
+    min-height: 280px;
+  }
+
+  .step-num {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .step-title em { font-style: italic; color: var(--gold); }
+
+  .step-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+    max-width: 480px;
+  }
+
+  /* BREATH TIMER */
+  .breath-area {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 20px 0;
+  }
+
+  .breath-ring-wrap {
+    position: relative;
+    width: 100px; height: 100px;
+    flex-shrink: 0;
+  }
+
+  .breath-svg { width: 100px; height: 100px; }
+
+  .breath-track { fill: none; stroke: var(--border); stroke-width: 2; }
+  .breath-arc {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear;
+    transform: rotate(-90deg);
+    transform-origin: 50px 50px;
+  }
+
+  .breath-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .breath-time {
+    font-size: 22px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .breath-unit {
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .breath-phases {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .breath-phase {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+  }
+
+  .phase-label {
+    width: 52px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+
+  .phase-bar-track {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .phase-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+  }
+
+  .phase-secs {
+    font-size: 10px;
+    color: var(--text-dim);
+    min-width: 14px;
+    text-align: right;
+  }
+
+  .ph-inhale .phase-bar-fill { background: var(--blue); }
+  .ph-hold .phase-bar-fill { background: var(--gold); }
+  .ph-exhale .phase-bar-fill { background: var(--green); }
+
+  .breath-phase.ph-active .phase-label { color: var(--text-primary); }
+  .breath-phase.ph-active .phase-secs { color: var(--gold); }
+
+  .breath-action-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .btn-start-breath {
+    padding: 10px 20px;
+    background: var(--gold-faint);
+    border: 1px solid var(--border-gold);
+    border-radius: 6px;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-start-breath:hover { background: var(--gold-glow); }
+
+  /* FOCUS INPUT */
+  .focus-field {
+    width: 100%;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: var(--text-primary);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+    min-height: 80px;
+    margin: 12px 0;
+    letter-spacing: 0.01em;
+  }
+
+  .focus-field:focus { border-color: var(--border-gold); background: var(--surface-4); }
+  .focus-field::placeholder { color: var(--text-dim); }
+
+  /* STATE SELECTOR */
+  .state-grid {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 12px 0 20px;
+  }
+
+  .state-chip {
+    padding: 8px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--surface-3);
+    cursor: pointer;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .state-chip:hover { border-color: var(--border-gold); color: var(--text-primary); }
+  .state-chip.active { color: var(--gold); border-color: var(--gold); background: var(--gold-faint); }
+
+  /* GO/NO-GO */
+  .gono-display {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .gono-verdict {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .gono-go { color: var(--green); }
+  .gono-wait { color: var(--amber); }
+  .gono-stop { color: var(--red); }
+
+  .gono-sub {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .gono-rationale {
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 18px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    text-align: left;
+    margin: 16px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  /* COMPLETE SCREEN */
+  .complete-area {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .complete-mark {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .complete-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .complete-sub {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin: 20px 0;
+  }
+
+  .sum-card {
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .sum-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .sum-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .restart-btn {
+    padding: 12px 28px;
+    background: none;
+    border: 1px solid var(--border-gold);
+    border-radius: 6px;
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .restart-btn:hover { background: var(--gold-faint); }
+
+  /* NAV BUTTONS */
+  .step-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-next {
+    flex: 1;
+    padding: 14px;
+    background: var(--gold);
+    border: none;
+    border-radius: 6px;
+    color: #0A0A09;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-next:hover { background: #D4AB35; }
+  .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .btn-back {
+    padding: 14px 18px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-back:hover { border-color: var(--border-gold); color: var(--text-secondary); }
+
+  /* SCAN ANIMATION */
+  @keyframes scan-line {
+    0% { top: 0; opacity: 0.6; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  .scan-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    animation: scan-line 1.2s linear forwards;
+  }
+
+  .ran-wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+</style>
+
+<div id="ran-root">
+  <div class="top-bar">
+    <div class="brand">Método RAN — Protocolo de Emergencia</div>
+    <div class="status-badge">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">En espera</span>
+    </div>
+  </div>
+
+  <div class="main-area">
+
+    <!-- IDLE SCREEN -->
+    <div class="screen active" id="screen-idle">
+      <div class="idle-header">
+        <div class="idle-title">Activar<br><em>intervención</em><br>de emergencia</div>
+        <div class="idle-sub">Sistema de respuesta inmediata · RAN Protocol</div>
+      </div>
+
+      <div style="font-size:10px;letter-spacing:0.18em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">¿Cuál es la situación activa?</div>
+      <div class="context-row">
+        <div class="context-card" onclick="selectCtx(this,'Negociación crítica')">
+          <div class="ctx-label">Contexto</div>
+          <div class="ctx-value">Negociación crítica</div>
+        </div>
+        <div class="context-card" onclick="selectCtx(this,'Decisión bajo presión')">
+          <div class="ctx-label">Contexto</div>
+          <div class="ctx-value">Decisión bajo presión</div>
+        </div>
+        <div class="context-card" onclick="selectCtx(this,'Conflicto o tensión')">
+          <div class="ctx-label">Contexto</div>
+          <div class="ctx-value">Conflicto o tensión</div>
+        </div>
+        <div class="context-card" onclick="selectCtx(this,'Saturación cognitiva')">
+          <div class="ctx-label">Contexto</div>
+          <div class="ctx-value">Saturación cognitiva</div>
+        </div>
+      </div>
+
+      <button class="activate-btn" id="activate-btn" disabled onclick="startProtocol()">
+        Activar protocolo — Intervenir ahora
+      </button>
+    </div>
+
+    <!-- STEP 1: CORTE DE ESTIMULO -->
+    <div class="screen" id="screen-s1">
+      <div class="step-header">
+        <div class="step-counter">Paso <span>01</span> / 04</div>
+        <div class="progress-track"><div class="progress-fill" style="width:25%"></div></div>
+        <button class="abort-btn" onclick="abortProtocol()">Salir</button>
+      </div>
+      <div class="step-content">
+        <div class="step-num">Intervención 01 · Corte inmediato</div>
+        <div class="step-title">Detené el<br><em>estímulo.</em></div>
+        <div class="step-desc">Pantalla hacia abajo o bloqueada. Cero input externo por los próximos 60 segundos. No es una pausa. Es una interrupción quirúrgica del circuito de activación.</div>
+
+        <div class="breath-area">
+          <div class="breath-ring-wrap">
+            <svg class="breath-svg" viewBox="0 0 100 100">
+              <circle class="breath-track" cx="50" cy="50" r="42"/>
+              <circle class="breath-arc" id="countdown-arc" cx="50" cy="50" r="42"
+                stroke-dasharray="263.8" stroke-dashoffset="0"/>
+            </svg>
+            <div class="breath-center">
+              <div class="breath-time" id="countdown-time">60</div>
+              <div class="breath-unit">seg</div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:11px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;">Instrucciones</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;font-family:'Cormorant Garamond',serif;font-size:16px;">Cerrá los ojos si podés. Respirá sin forzar. El objetivo no es relajarte: es detener el flujo de inputs que amplifican el estado de alarma.</div>
+          </div>
+        </div>
+
+        <div class="breath-action-row">
+          <button class="btn-start-breath" id="btn-countdown" onclick="startCountdown()">Iniciar cuenta regresiva</button>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goIdle()">← Volver</button>
+        <button class="btn-next" id="next-s1" onclick="goStep(2)">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: RESPIRACION 4-2-6 -->
+    <div class="screen" id="screen-s2">
+      <div class="step-header">
+        <div class="step-counter">Paso <span>02</span> / 04</div>
+        <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+        <button class="abort-btn" onclick="abortProtocol()">Salir</button>
+      </div>
+      <div class="step-content">
+        <div class="step-num">Intervención 02 · Desenganche focal</div>
+        <div class="step-title">Respiración<br><em>4 — 2 — 6</em></div>
+        <div class="step-desc">Un ciclo completo es suficiente para intervenir el sistema nervioso autónomo. Seguí el ritmo exacto.</div>
+
+        <div class="breath-area" style="margin-top:16px;">
+          <div class="breath-ring-wrap">
+            <svg class="breath-svg" viewBox="0 0 100 100">
+              <circle class="breath-track" cx="50" cy="50" r="42"/>
+              <circle class="breath-arc" id="breath-arc" cx="50" cy="50" r="42"
+                stroke-dasharray="263.8" stroke-dashoffset="263.8"/>
+            </svg>
+            <div class="breath-center">
+              <div class="breath-time" id="breath-time">—</div>
+              <div class="breath-unit" id="breath-label">seg</div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div class="breath-phase ph-inhale" id="ph-inhale">
+              <div class="phase-label">Inhalar</div>
+              <div class="phase-bar-track"><div class="phase-bar-fill" id="bar-inhale" style="width:0%"></div></div>
+              <div class="phase-secs">4</div>
+            </div>
+            <div class="breath-phase ph-hold" id="ph-hold" style="margin-top:8px;">
+              <div class="phase-label">Sostener</div>
+              <div class="phase-bar-track"><div class="phase-bar-fill" id="bar-hold" style="width:0%"></div></div>
+              <div class="phase-secs">2</div>
+            </div>
+            <div class="breath-phase ph-exhale" id="ph-exhale" style="margin-top:8px;">
+              <div class="phase-label">Exhalar</div>
+              <div class="phase-bar-track"><div class="phase-bar-fill" id="bar-exhale" style="width:0%"></div></div>
+              <div class="phase-secs">6</div>
+            </div>
+            <div style="margin-top:14px;font-size:10px;color:var(--text-dim);letter-spacing:0.1em;" id="cycle-counter">0 ciclos completados</div>
+          </div>
+        </div>
+
+        <div class="breath-action-row">
+          <button class="btn-start-breath" id="btn-breath" onclick="startBreath()">Iniciar guía de respiración</button>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(1)">← Volver</button>
+        <button class="btn-next" id="next-s2" onclick="goStep(3)">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: ESTADO -->
+    <div class="screen" id="screen-s3">
+      <div class="step-header">
+        <div class="step-counter">Paso <span>03</span> / 04</div>
+        <div class="progress-track"><div class="progress-fill" style="width:75%"></div></div>
+        <button class="abort-btn" onclick="abortProtocol()">Salir</button>
+      </div>
+      <div class="step-content">
+        <div class="step-num">Intervención 03 · Diagnóstico post-pausa</div>
+        <div class="step-title">¿Cuál es tu<br><em>estado real</em> ahora?</div>
+        <div class="step-desc">No el que querés tener. El que tenés. La precisión del diagnóstico determina la calidad de lo que viene después.</div>
+
+        <div class="state-grid" id="state-grid">
+          <div class="state-chip" onclick="selectState(this,'saturacion','stop')">Saturación</div>
+          <div class="state-chip" onclick="selectState(this,'fatiga','wait')">Fatiga</div>
+          <div class="state-chip" onclick="selectState(this,'operativo','go')">Operativo</div>
+          <div class="state-chip" onclick="selectState(this,'claridad','go')">Claridad</div>
+          <div class="state-chip" onclick="selectState(this,'ran','go')">Estado RAN</div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <div style="font-size:10px;letter-spacing:0.15em;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">Foco para los próximos 50 min</div>
+          <textarea class="focus-field" id="focus-input" placeholder="¿Cuál es lo único que importa ahora?" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(2)">← Volver</button>
+        <button class="btn-next" id="next-s3" onclick="goStep(4)" disabled>Ver veredicto →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: GO / NO-GO -->
+    <div class="screen" id="screen-s4">
+      <div class="step-header">
+        <div class="step-counter">Paso <span>04</span> / 04</div>
+        <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+        <button class="abort-btn" onclick="abortProtocol()">Salir</button>
+      </div>
+      <div class="step-content">
+        <div class="step-num">Diagnóstico final · Veredicto de sistema</div>
+        <div class="gono-display">
+          <div class="gono-verdict" id="gono-verdict">—</div>
+          <div class="gono-sub" id="gono-sub">Calculando estado</div>
+          <div class="gono-rationale" id="gono-rationale">Completá el diagnóstico para recibir el veredicto.</div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(3)">← Revisar</button>
+        <button class="btn-next" onclick="complete()">Registrar y cerrar →</button>
+      </div>
+    </div>
+
+    <!-- COMPLETE SCREEN -->
+    <div class="screen" id="screen-complete">
+      <div class="complete-area">
+        <div class="complete-mark">✓ Protocolo completado</div>
+        <div class="complete-title">Sistema<br>calibrado</div>
+        <div class="complete-sub" id="complete-time-sub">Intervención ejecutada · Estado registrado</div>
+
+        <div class="summary-grid">
+          <div class="sum-card">
+            <div class="sum-label">Contexto</div>
+            <div class="sum-value" id="sum-ctx" style="font-size:14px;">—</div>
+          </div>
+          <div class="sum-card">
+            <div class="sum-label">Estado final</div>
+            <div class="sum-value" id="sum-state">—</div>
+          </div>
+          <div class="sum-card">
+            <div class="sum-label">Veredicto</div>
+            <div class="sum-value" id="sum-verdict">—</div>
+          </div>
+        </div>
+
+        <div class="gono-rationale" id="complete-focus" style="margin:16px 0;text-align:left;"></div>
+
+        <button class="restart-btn" onclick="goIdle()">Nueva intervención</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let selectedCtx = null;
+let selectedStateKey = null;
+let selectedVerdict = null;
+let countdownTimer = null;
+let breathTimer = null;
+let breathCycles = 0;
+let breathActive = false;
+let countdownSecs = 60;
+let countdownActive = false;
+
+const CIRC = 2 * Math.PI * 42;
+
+function selectCtx(el, ctx) {
+  document.querySelectorAll('.context-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCtx = ctx;
+  document.getElementById('activate-btn').disabled = false;
+}
+
+function startProtocol() {
+  document.getElementById('status-dot').className = 'status-dot active';
+  document.getElementById('status-text').textContent = 'Protocolo activo';
+  goStep(1);
+}
+
+function goIdle() {
+  clearAll();
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-idle').classList.add('active');
+  document.getElementById('status-dot').className = 'status-dot';
+  document.getElementById('status-text').textContent = 'En espera';
+}
+
+function abortProtocol() {
+  clearAll();
+  goIdle();
+  document.querySelectorAll('.context-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('activate-btn').disabled = true;
+  selectedCtx = null;
+}
+
+function goStep(n) {
+  clearAll();
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-s' + n).classList.add('active');
+  if (n === 4) computeVerdict();
+}
+
+function complete() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-complete').classList.add('active');
+  document.getElementById('status-dot').className = 'status-dot done';
+  document.getElementById('status-text').textContent = 'Completado';
+  document.getElementById('sum-ctx').textContent = selectedCtx || '—';
+  const stateLabels = {saturacion:'Saturación',fatiga:'Fatiga',operativo:'Operativo',claridad:'Claridad',ran:'Estado RAN'};
+  document.getElementById('sum-state').textContent = stateLabels[selectedStateKey] || '—';
+  document.getElementById('sum-verdict').textContent = selectedVerdict === 'go' ? 'GO' : selectedVerdict === 'wait' ? 'ESPERAR' : 'NO GO';
+  const focusVal = document.getElementById('focus-input').value;
+  document.getElementById('complete-focus').textContent = focusVal ? '"' + focusVal + '"' : 'Sin foco definido.';
+}
+
+function clearAll() {
+  if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+  if (breathTimer) { clearInterval(breathTimer); breathTimer = null; }
+  countdownActive = false;
+  breathActive = false;
+  countdownSecs = 60;
+  breathCycles = 0;
+  resetCountdownUI();
+  resetBreathUI();
+}
+
+function resetCountdownUI() {
+  const arc = document.getElementById('countdown-arc');
+  if (arc) { arc.style.strokeDashoffset = '0'; }
+  const t = document.getElementById('countdown-time');
+  if (t) t.textContent = '60';
+  const btn = document.getElementById('btn-countdown');
+  if (btn) { btn.textContent = 'Iniciar cuenta regresiva'; btn.disabled = false; }
+}
+
+function resetBreathUI() {
+  const arc = document.getElementById('breath-arc');
+  if (arc) arc.style.strokeDashoffset = CIRC;
+  const bt = document.getElementById('breath-time');
+  if (bt) bt.textContent = '—';
+  const bl = document.getElementById('breath-label');
+  if (bl) bl.textContent = 'seg';
+  ['inhale','hold','exhale'].forEach(p => {
+    const b = document.getElementById('bar-' + p);
+    if (b) b.style.width = '0%';
+    const ph = document.getElementById('ph-' + p);
+    if (ph) ph.classList.remove('ph-active');
+  });
+  const cc = document.getElementById('cycle-counter');
+  if (cc) cc.textContent = '0 ciclos completados';
+  const bb = document.getElementById('btn-breath');
+  if (bb) { bb.textContent = 'Iniciar guía de respiración'; bb.disabled = false; }
+}
+
+function startCountdown() {
+  if (countdownActive) return;
+  countdownActive = true;
+  const btn = document.getElementById('btn-countdown');
+  btn.disabled = true;
+  const arc = document.getElementById('countdown-arc');
+  const timeEl = document.getElementById('countdown-time');
+  let secs = 60;
+  const total = CIRC;
+
+  countdownTimer = setInterval(() => {
+    secs--;
+    timeEl.textContent = secs;
+    arc.style.strokeDashoffset = total * (secs / 60);
+    if (secs <= 0) {
+      clearInterval(countdownTimer);
+      countdownTimer = null;
+      btn.textContent = '✓ Completado';
+    }
+  }, 1000);
+}
+
+function startBreath() {
+  if (breathActive) return;
+  breathActive = true;
+  const btn = document.getElementById('btn-breath');
+  btn.disabled = true;
+  const PHASES = [{id:'inhale',secs:4,barId:'bar-inhale'},{id:'hold',secs:2,barId:'bar-hold'},{id:'exhale',secs:6,barId:'bar-exhale'}];
+  const TOTAL = 12;
+  let phaseIdx = 0;
+  let elapsed = 0;
+  let phaseElapsed = 0;
+  const arc = document.getElementById('breath-arc');
+  const timeEl = document.getElementById('breath-time');
+  const labelEl = document.getElementById('breath-label');
+  const cycleEl = document.getElementById('cycle-counter');
+  let cycles = 0;
+  const phaseLabels = {inhale:'Inhalar',hold:'Sostener',exhale:'Exhalar'};
+
+  function activatePhase(idx) {
+    ['inhale','hold','exhale'].forEach((p,i) => {
+      const ph = document.getElementById('ph-' + p);
+      if (i === idx) ph.classList.add('ph-active');
+      else ph.classList.remove('ph-active');
+      const b = document.getElementById('bar-' + p);
+      b.style.width = i < idx ? '100%' : '0%';
+    });
+    labelEl.textContent = phaseLabels[PHASES[idx].id];
+  }
+
+  activatePhase(0);
+  const TICK = 100;
+
+  breathTimer = setInterval(() => {
+    phaseElapsed += TICK;
+    elapsed += TICK;
+    const cur = PHASES[phaseIdx];
+    const pct = Math.min(phaseElapsed / (cur.secs * 1000), 1);
+    document.getElementById(cur.barId).style.width = Math.round(pct * 100) + '%';
+    const secsLeft = Math.ceil((cur.secs * 1000 - phaseElapsed) / 1000);
+    timeEl.textContent = Math.max(secsLeft, 0);
+    const totalPct = elapsed / (TOTAL * 1000);
+    arc.style.strokeDashoffset = CIRC * (1 - Math.min(totalPct, 1));
+
+    if (phaseElapsed >= cur.secs * 1000) {
+      phaseElapsed = 0;
+      phaseIdx++;
+      if (phaseIdx >= PHASES.length) {
+        phaseIdx = 0;
+        cycles++;
+        elapsed = 0;
+        arc.style.strokeDashoffset = CIRC;
+        cycleEl.textContent = cycles + (cycles === 1 ? ' ciclo completado' : ' ciclos completados');
+        if (cycles >= 3) {
+          clearInterval(breathTimer);
+          breathTimer = null;
+          ['inhale','hold','exhale'].forEach(p => {
+            document.getElementById('bar-' + p).style.width = '100%';
+            document.getElementById('ph-' + p).classList.remove('ph-active');
+          });
+          timeEl.textContent = '✓';
+          labelEl.textContent = '';
+          arc.style.strokeDashoffset = 0;
+          btn.textContent = '✓ 3 ciclos completados';
+          return;
+        }
+      }
+      activatePhase(phaseIdx);
+    }
+  }, TICK);
+}
+
+function selectState(el, key, verdict) {
+  document.querySelectorAll('.state-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedStateKey = key;
+  selectedVerdict = verdict;
+  document.getElementById('next-s3').disabled = false;
+}
+
+function computeVerdict() {
+  const verdictEl = document.getElementById('gono-verdict');
+  const subEl = document.getElementById('gono-sub');
+  const rationaleEl = document.getElementById('gono-rationale');
+
+  const data = {
+    go: {
+      text: 'GO',
+      cls: 'gono-go',
+      sub: 'Sistema autorizado para operar',
+      rationale: 'Tu estado cognitivo está dentro del rango de precisión ejecutiva. Podés proceder con la decisión o situación activa. Mantené el foco único que definiste y ejecutá desde la claridad, no desde el impulso.'
+    },
+    wait: {
+      text: 'ESPERAR',
+      cls: 'gono-wait',
+      sub: 'Estado sub-óptimo — diferir si es posible',
+      rationale: 'Tu sistema está en modo de carga. Si la decisión puede esperar 20-30 minutos, esperá. Si no puede, aplicá un segundo ciclo de respiración 4-2-6 antes de proceder. Reducí el alcance de lo que decidís ahora a lo estrictamente necesario.'
+    },
+    stop: {
+      text: 'NO GO',
+      cls: 'gono-stop',
+      sub: 'Saturación detectada — no decidir',
+      rationale: 'Tu biología está operando en modo de saturación. Las decisiones tomadas en este estado tienen una tasa de error significativamente elevada. Diferí todo lo que sea diferible. Si algo es urgente e impostergable, delegá o pedí más tiempo antes de comprometerte.'
+    }
+  };
+
+  const v = data[selectedVerdict] || data['wait'];
+  verdictEl.textContent = v.text;
+  verdictEl.className = 'gono-verdict ' + v.cls;
+  subEl.textContent = v.sub;
+  rationaleEl.textContent = v.rationale;
+}
+</script>
