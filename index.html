@@ -528,6 +528,37 @@
     opacity: 0;
   }
   .voice-dot.speaking { animation: pulse-dot 0.6s ease-in-out infinite; opacity: 1; }
+
+  .voice-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  .voice-selector label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .voice-selector select {
+    flex: 1;
+    background: var(--surface-4);
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  .voice-selector select:focus { border-color: var(--gold); }
 </style>
 
 <div id="ran-root">
@@ -648,6 +679,12 @@
             <div class="voice-dot" id="voice-dot"></div>
             <span id="voice-status">Voz en espera</span>
           </div>
+          <div class="voice-selector">
+            <label>Voz</label>
+            <select id="voice-select" onchange="onVoiceChange()">
+              <option>Cargando voces...</option>
+            </select>
+          </div>
         </div>
       </div>
       <button class="btn-start-breath" id="btn-breath" onclick="startBreath()">Iniciar guía de respiración</button>
@@ -766,70 +803,71 @@
     } catch(e) {}
   }
 
-  // ── Web Speech TTS (español, voz masculina) ────────────────────────────────
-  // Priority list: preferred male Spanish voices across OS/browser
-  const VOICE_PRIORITY = [
-    'Jorge',           // macOS – español España, natural
-    'Diego',           // macOS – español Latinoamérica
-    'Mónica',          // fallback macOS femenino si no hay masculino
-    'Microsoft Pablo Online (Natural)',  // Windows 11 neural
-    'Microsoft Raul Online (Natural)',   // Windows 11 neural
-    'Microsoft Pablo',                   // Windows legacy
-    'Google español',                    // Android / Chrome
-    'Google español de Estados Unidos',
-  ];
+  // ── Voice selector ────────────────────────────────────────────────────────
+  let _selectedVoice = null;
 
-  let _voicesReady = false;
-  let _voiceCache  = null;
-
-  function pickVoice() {
-    if (_voiceCache) return _voiceCache;
+  function loadVoices() {
+    const sel = document.getElementById('voice-select');
+    if (!sel) return;
     const all = window.speechSynthesis.getVoices();
-    if (!all.length) return null;
+    if (!all.length) return;
+    sel.innerHTML = '';
 
-    // 1. Try priority list in order
-    for (const name of VOICE_PRIORITY) {
-      const v = all.find(v => v.name === name);
-      if (v) { _voiceCache = v; return v; }
-    }
-    // 2. Any male-sounding Spanish voice (heuristic: name contains common male names)
-    const maleHints = ['pablo','raul','diego','jorge','juan','carlos','miguel','antonio','jose','david'];
-    const maleVoice = all.find(v =>
-      v.lang.startsWith('es') &&
-      maleHints.some(h => v.name.toLowerCase().includes(h))
-    );
-    if (maleVoice) { _voiceCache = maleVoice; return maleVoice; }
+    // Preferred names (Raul first)
+    const PREFER = ['raul','pablo','jorge','diego','juan','carlos','miguel','antonio','jose','david'];
 
-    // 3. Any Spanish voice
-    const esVoice = all.find(v => v.lang.startsWith('es'));
-    if (esVoice) { _voiceCache = esVoice; return esVoice; }
+    // Sort: Spanish voices first, preferred names at top
+    const sorted = [...all].sort((a, b) => {
+      const aEs = a.lang.startsWith('es') ? 0 : 1;
+      const bEs = b.lang.startsWith('es') ? 0 : 1;
+      if (aEs !== bEs) return aEs - bEs;
+      const aP = PREFER.findIndex(h => a.name.toLowerCase().includes(h));
+      const bP = PREFER.findIndex(h => b.name.toLowerCase().includes(h));
+      const aRank = aP === -1 ? 99 : aP;
+      const bRank = bP === -1 ? 99 : bP;
+      return aRank - bRank;
+    });
 
-    return null;
+    sorted.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v.name;
+      opt.textContent = v.name + ' (' + v.lang + ')';
+      sel.appendChild(opt);
+    });
+
+    // Auto-select best voice
+    const best = sorted.find(v => v.lang.startsWith('es') && PREFER.some(h => v.name.toLowerCase().includes(h)))
+                 || sorted.find(v => v.lang.startsWith('es'))
+                 || sorted[0];
+    if (best) { sel.value = best.name; _selectedVoice = best; }
   }
+
+  function onVoiceChange() {
+    const sel = document.getElementById('voice-select');
+    const all = window.speechSynthesis.getVoices();
+    _selectedVoice = all.find(v => v.name === sel.value) || null;
+    // Preview
+    speak('Hola, esta es mi voz.');
+  }
+
+  function getVoice() { return _selectedVoice; }
 
   function speak(text) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-
     const vDot = document.getElementById('voice-dot');
     const vSt  = document.getElementById('voice-status');
 
     const doSpeak = () => {
       const utt   = new SpeechSynthesisUtterance(text);
-      const voice = pickVoice();
-      if (voice) {
-        utt.voice = voice;
-        utt.lang  = voice.lang;
-      } else {
-        utt.lang = 'es-ES';
-      }
+      const voice = getVoice();
+      if (voice) { utt.voice = voice; utt.lang = voice.lang; }
+      else { utt.lang = 'es-ES'; }
       utt.rate   = 0.9;
-      utt.pitch  = 0.85;   // slightly lower = more masculine/calm
-      utt.volume = 0.92;
-
+      utt.pitch  = 0.82;
+      utt.volume = 0.95;
       if (vDot) vDot.classList.add('speaking');
-      if (vSt)  vSt.textContent = voice ? `Voz: ${voice.name}` : 'Voz activa';
-
+      if (vSt)  vSt.textContent = voice ? voice.name : 'Voz activa';
       utt.onend = () => {
         if (vDot) vDot.classList.remove('speaking');
         if (vSt)  vSt.textContent = 'Voz en espera';
@@ -837,15 +875,14 @@
       window.speechSynthesis.speak(utt);
     };
 
-    // Voices may not be loaded on first call
-    if (window.speechSynthesis.getVoices().length > 0) {
-      doSpeak();
-    } else {
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.onvoiceschanged = null;
-        doSpeak();
-      };
-    }
+    if (window.speechSynthesis.getVoices().length > 0) { doSpeak(); }
+    else { window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.onvoiceschanged = null; doSpeak(); }; }
+  }
+
+  // Init voices once DOM ready
+  if (window.speechSynthesis) {
+    if (window.speechSynthesis.getVoices().length > 0) { setTimeout(loadVoices, 100); }
+    else { window.speechSynthesis.onvoiceschanged = () => { loadVoices(); }; }
   }
 
   // ── Navigation ─────────────────────────────────────────────────────────────
@@ -911,7 +948,7 @@
 
   function clearTimers() {
     if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
-    if (breathTimer)    { clearInterval(breathTimer);    breathTimer    = null; }
+    if (breathTimer)    { breathTimer.clear(); breathTimer = null; }
   }
 
   // ── UI resets ──────────────────────────────────────────────────────────────
@@ -970,7 +1007,7 @@
     }, 1000);
   }
 
-  // ── Breathing guide (Step 2) ──────────────────────────────────────────────
+  // ── Breathing guide (Step 2) — drift-free setTimeout chain ─────────────────
   function startBreath() {
     const btn = document.getElementById('btn-breath');
     if (btn.disabled) return;
@@ -978,52 +1015,66 @@
     btn.textContent = 'Guía activa...';
 
     const PHASES = [
-      { id:'inhale', secs:4,  barId:'bar-inhale', text:'Inhalar'  },
-      { id:'hold',   secs:2,  barId:'bar-hold',   text:'Sostener' },
-      { id:'exhale', secs:6,  barId:'bar-exhale', text:'Exhalar'  }
+      { id:'inhale', secs:4, barId:'bar-inhale', text:'Inhalar'  },
+      { id:'hold',   secs:2, barId:'bar-hold',   text:'Sostener' },
+      { id:'exhale', secs:6, barId:'bar-exhale', text:'Exhalar'  }
     ];
     const TOTAL_SECS = 12;
-    let phaseIdx = 0, phaseMs = 0, totalMs = 0, cycles = 0;
-    let lastSpokenPhase = -1;
+    const TICK = 100;
 
     const arc    = document.getElementById('breath-arc');
     const timeEl = document.getElementById('breath-time');
     const lblEl  = document.getElementById('breath-label');
     const cycleEl= document.getElementById('cycle-counter');
-    const TICK   = 100;
+
+    let phaseIdx = 0, cycles = 0;
+    let phaseStart = 0, cycleStart = 0;
+    let tickHandle = null;
 
     function activatePhase(idx) {
+      // 1. Announce immediately — voice fires at phase start, not mid-phase
+      speak(PHASES[idx].text);
+
+      // 2. Update label + highlight
+      lblEl.textContent = PHASES[idx].text;
       PHASES.forEach((p, i) => {
         document.getElementById('ph-' + p.id).classList.toggle('ph-active', i === idx);
         document.getElementById(p.barId).style.width = i < idx ? '100%' : '0%';
       });
-      lblEl.textContent = PHASES[idx].text;
-      if (idx !== lastSpokenPhase) {
-        lastSpokenPhase = idx;
-        speak(PHASES[idx].text);
-      }
+
+      phaseStart = performance.now();
     }
 
-    activatePhase(0);
+    function tick() {
+      const now       = performance.now();
+      const phaseDur  = PHASES[phaseIdx].secs * 1000;
+      const phaseEl   = now - phaseStart;
+      const cycleDur  = TOTAL_SECS * 1000;
+      const cycleEl_  = now - cycleStart;
 
-    breathTimer = setInterval(() => {
-      phaseMs += TICK; totalMs += TICK;
-      const cur = PHASES[phaseIdx];
-      document.getElementById(cur.barId).style.width =
-        Math.round(Math.min(phaseMs / (cur.secs * 1000), 1) * 100) + '%';
-      const secsLeft = Math.max(Math.ceil((cur.secs * 1000 - phaseMs) / 1000), 0);
+      // Update progress bar for current phase
+      const pct = Math.min(phaseEl / phaseDur, 1);
+      document.getElementById(PHASES[phaseIdx].barId).style.width = Math.round(pct * 100) + '%';
+
+      // Countdown number
+      const secsLeft = Math.max(Math.ceil((phaseDur - phaseEl) / 1000), 0);
       timeEl.textContent = secsLeft;
-      arc.style.strokeDashoffset = CIRC * (1 - Math.min(totalMs / (TOTAL_SECS * 1000), 1));
 
-      if (phaseMs >= cur.secs * 1000) {
-        phaseMs = 0; phaseIdx++;
+      // Ring arc
+      arc.style.strokeDashoffset = CIRC * (1 - Math.min(cycleEl_ / cycleDur, 1));
+
+      // Phase done?
+      if (phaseEl >= phaseDur) {
+        phaseIdx++;
         if (phaseIdx >= PHASES.length) {
-          phaseIdx = 0; totalMs = 0; cycles++;
-          lastSpokenPhase = -1;
+          // Cycle done
+          phaseIdx = 0; cycles++;
+          cycleStart = performance.now();
           arc.style.strokeDashoffset = CIRC;
           cycleEl.textContent = cycles + (cycles === 1 ? ' ciclo completado' : ' ciclos completados');
+
           if (cycles >= 3) {
-            clearInterval(breathTimer); breathTimer = null;
+            clearTimeout(tickHandle); tickHandle = null;
             PHASES.forEach(p => {
               document.getElementById(p.barId).style.width = '100%';
               document.getElementById('ph-' + p.id).classList.remove('ph-active');
@@ -1031,13 +1082,23 @@
             timeEl.textContent = ''; lblEl.textContent = '';
             arc.style.strokeDashoffset = 0;
             btn.textContent = '3 ciclos completados';
-            setTimeout(() => speak('Completado. Muy bien.'), 200);
+            speak('Completado. Muy bien.');
+            breathTimer = null;
             return;
           }
         }
         activatePhase(phaseIdx);
       }
-    }, TICK);
+
+      tickHandle = setTimeout(tick, TICK);
+      breathTimer = { clear: () => clearTimeout(tickHandle) };
+    }
+
+    // Start
+    cycleStart = performance.now();
+    activatePhase(0);
+    tickHandle = setTimeout(tick, TICK);
+    breathTimer = { clear: () => clearTimeout(tickHandle) };
   }
 
   // ── State selection (Step 3) ───────────────────────────────────────────────
