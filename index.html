@@ -4,7 +4,6 @@
 
   :root {
     --gold: #B8952A;
-    --gold-dim: #8A6E1F;
     --gold-faint: rgba(184,149,42,0.12);
     --gold-glow: rgba(184,149,42,0.22);
     --surface: #0A0A09;
@@ -36,14 +35,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 28px;
+    padding: 20px 32px;
     border-bottom: 1px solid var(--border);
     background: var(--surface-2);
   }
 
   .brand {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
+    font-size: 15px;
     letter-spacing: 0.22em;
     color: var(--gold);
     text-transform: uppercase;
@@ -53,38 +52,38 @@
   .status-badge {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 11px;
+    gap: 9px;
+    font-size: 13px;
     letter-spacing: 0.14em;
     color: var(--text-dim);
     text-transform: uppercase;
   }
 
   .status-dot {
-    width: 7px; height: 7px;
+    width: 8px; height: 8px;
     border-radius: 50%;
     background: var(--red);
     animation: pulse-dot 2s ease-in-out infinite;
   }
   .status-dot.active { background: var(--gold); }
-  .status-dot.done { background: var(--green); animation: none; }
+  .status-dot.done   { background: var(--green); animation: none; }
 
   @keyframes pulse-dot {
     0%,100% { opacity:1; transform:scale(1); }
-    50% { opacity:0.45; transform:scale(0.75); }
+    50%     { opacity:0.45; transform:scale(0.75); }
   }
 
-  .main-area { padding: 32px 28px 28px; }
+  .main-area { padding: 38px 32px 34px; }
 
   .screen { display: none; }
   .screen.active { display: block; }
 
-  /* IDLE */
-  .idle-header { text-align: center; padding: 8px 0 28px; }
+  /* ── IDLE ── */
+  .idle-header { text-align: center; padding: 8px 0 32px; }
 
   .idle-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 52px;
+    font-size: 62px;
     font-weight: 500;
     color: var(--text-primary);
     line-height: 1.1;
@@ -92,25 +91,25 @@
   .idle-title em { font-style: italic; color: var(--gold); }
 
   .idle-sub {
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 0.18em;
     color: var(--text-dim);
-    margin-top: 12px;
+    margin-top: 14px;
     text-transform: uppercase;
   }
 
   .ctx-label-row {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.18em;
     color: var(--text-dim);
     text-transform: uppercase;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .context-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 12px;
     margin: 20px 0;
   }
 
@@ -118,7 +117,7 @@
     background: var(--surface-3);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 16px 18px;
+    padding: 20px 22px;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
@@ -139,47 +138,47 @@
   .context-card.selected::before { opacity: 1; }
 
   .ctx-tag {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.18em;
     color: var(--text-dim);
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .ctx-val {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
+    font-size: 24px;
     color: var(--text-primary);
     font-weight: 500;
   }
 
   .activate-btn {
     width: 100%;
-    padding: 18px;
+    padding: 22px;
     background: var(--gold);
     border: none;
     border-radius: 8px;
     color: #0A0A09;
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
-    margin-top: 18px;
+    margin-top: 20px;
   }
   .activate-btn:hover { background: #D4AB35; transform: translateY(-1px); }
   .activate-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
-  /* STEP HEADER */
+  /* ── STEP HEADER ── */
   .step-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
 
   .step-counter {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.18em;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -190,75 +189,74 @@
     flex: 1;
     height: 1px;
     background: var(--border);
-    margin: 0 18px;
+    margin: 0 20px;
   }
   .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
 
   .abort-btn {
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.12em;
     color: var(--text-dim);
     background: none;
     border: none;
     cursor: pointer;
     text-transform: uppercase;
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 4px;
     font-family: 'DM Mono', monospace;
   }
   .abort-btn:hover { color: var(--text-secondary); background: var(--surface-3); }
 
-  /* STEP CONTENT */
+  /* ── STEP CONTENT ── */
   .step-num {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.2em;
     color: var(--gold);
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .step-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 46px;
+    font-size: 55px;
     font-weight: 500;
     line-height: 1.1;
     color: var(--text-primary);
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
   .step-title em { font-style: italic; color: var(--gold); }
 
   .step-desc {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text-secondary);
     line-height: 1.75;
-    margin-bottom: 26px;
+    margin-bottom: 28px;
     letter-spacing: 0.02em;
-    max-width: 500px;
   }
 
-  /* BREATH RING */
+  /* ── BREATH RING ── */
   .breath-area {
     display: flex;
     align-items: center;
-    gap: 28px;
-    margin: 20px 0;
+    gap: 32px;
+    margin: 22px 0;
   }
 
   .breath-ring-wrap {
     position: relative;
-    width: 110px; height: 110px;
+    width: 132px; height: 132px;
     flex-shrink: 0;
   }
-  .breath-svg { width: 110px; height: 110px; }
+  .breath-svg { width: 132px; height: 132px; }
   .breath-track { fill: none; stroke: var(--border); stroke-width: 2; }
   .breath-arc {
     fill: none;
     stroke: var(--gold);
-    stroke-width: 2;
+    stroke-width: 2.5;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.1s linear;
     transform: rotate(-90deg);
-    transform-origin: 55px 55px;
+    transform-origin: 66px 66px;
   }
   .breath-center {
     position: absolute;
@@ -267,87 +265,86 @@
     text-align: center;
   }
   .breath-time {
-    font-size: 28px;
+    font-size: 34px;
     font-family: 'Cormorant Garamond', serif;
     font-weight: 500;
     color: var(--text-primary);
     line-height: 1;
   }
   .breath-unit {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--text-dim);
     letter-spacing: 0.15em;
     text-transform: uppercase;
   }
 
-  .breath-phases { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .breath-phases { display: flex; flex-direction: column; gap: 12px; flex: 1; }
 
-  .breath-phase {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .breath-phase { display: flex; align-items: center; gap: 14px; }
+
   .phase-label {
-    width: 68px;
+    width: 76px;
     color: var(--text-dim);
     letter-spacing: 0.1em;
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
   }
   .phase-bar-track {
-    flex: 1;
-    height: 3px;
+    flex: 1; height: 3px;
     background: var(--border);
     border-radius: 2px;
     overflow: hidden;
   }
   .phase-bar-fill { height: 100%; border-radius: 2px; transition: width 0.1s linear; }
-  .phase-secs { font-size: 11px; color: var(--text-dim); min-width: 16px; text-align: right; }
+  .phase-secs { font-size: 12px; color: var(--text-dim); min-width: 20px; text-align: right; }
 
   .ph-inhale .phase-bar-fill { background: var(--blue); }
-  .ph-hold .phase-bar-fill { background: var(--gold); }
+  .ph-hold   .phase-bar-fill { background: var(--gold); }
   .ph-exhale .phase-bar-fill { background: var(--green); }
 
   .breath-phase.ph-active .phase-label { color: var(--text-primary); }
-  .breath-phase.ph-active .phase-secs { color: var(--gold); }
+  .breath-phase.ph-active .phase-secs  { color: var(--gold); }
 
   .breath-side-text {
-    font-size: 15px;
+    font-size: 18px;
     color: var(--text-secondary);
     line-height: 1.7;
     font-family: 'Cormorant Garamond', serif;
   }
 
   .btn-start-breath {
-    padding: 11px 22px;
+    padding: 13px 26px;
     background: var(--gold-faint);
     border: 1px solid var(--border-gold);
     border-radius: 6px;
     color: var(--gold);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
-    margin-top: 18px;
+    margin-top: 20px;
   }
   .btn-start-breath:hover { background: var(--gold-glow); }
 
-  /* STATE CHIPS */
-  .state-grid {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 14px 0 22px;
+  .cycle-count {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
   }
+
+  /* ── STATE CHIPS ── */
+  .state-grid { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0 26px; }
+
   .state-chip {
-    padding: 10px 18px;
+    padding: 12px 22px;
     border-radius: 100px;
     border: 1px solid var(--border);
     background: var(--surface-3);
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     transition: all 0.2s;
@@ -357,46 +354,54 @@
   .state-chip:hover { border-color: var(--border-gold); color: var(--text-primary); }
   .state-chip.active { color: var(--gold); border-color: var(--gold); background: var(--gold-faint); }
 
+  .focus-label {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
   .focus-field {
     width: 100%;
     background: var(--surface-3);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 16px 18px;
+    padding: 18px 20px;
     color: var(--text-primary);
     font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
+    font-size: 22px;
     font-style: italic;
     outline: none;
     transition: border-color 0.2s;
     resize: none;
-    min-height: 80px;
-    margin: 12px 0;
+    min-height: 88px;
+    margin: 0 0 4px;
     letter-spacing: 0.01em;
   }
   .focus-field:focus { border-color: var(--border-gold); background: var(--surface-4); }
   .focus-field::placeholder { color: var(--text-dim); }
 
-  /* GO/NO-GO */
-  .gono-display { text-align: center; padding: 18px 0 12px; }
+  /* ── GO / NO-GO ── */
+  .gono-display { text-align: center; padding: 20px 0 14px; }
 
   .gono-verdict {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 80px;
+    font-size: 96px;
     font-weight: 500;
     line-height: 1;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
-  .gono-go { color: var(--green); }
+  .gono-go   { color: var(--green); }
   .gono-wait { color: var(--amber); }
   .gono-stop { color: var(--red); }
 
   .gono-sub {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.18em;
     color: var(--text-dim);
     text-transform: uppercase;
-    margin-bottom: 22px;
+    margin-bottom: 24px;
   }
 
   .gono-rationale {
@@ -404,100 +409,100 @@
     border: 1px solid var(--border);
     border-left: 2px solid var(--gold);
     border-radius: 0 6px 6px 0;
-    padding: 18px 20px;
+    padding: 20px 24px;
     color: var(--text-secondary);
     line-height: 1.75;
     text-align: left;
     margin: 16px 0;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 19px;
+    font-size: 22px;
     font-style: italic;
   }
 
-  /* COMPLETE */
-  .complete-area { text-align: center; padding: 20px 0; }
+  /* ── COMPLETE ── */
+  .complete-area { text-align: center; padding: 24px 0; }
 
   .complete-mark {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.22em;
     color: var(--green);
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   .complete-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 46px;
+    font-size: 55px;
     font-weight: 500;
     color: var(--text-primary);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .complete-sub {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.1em;
     color: var(--text-dim);
-    margin-bottom: 28px;
+    margin-bottom: 30px;
     line-height: 1.6;
   }
 
   .summary-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 12px;
+    margin: 22px 0;
   }
   .sum-card {
     background: var(--surface-3);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 14px 16px;
+    padding: 16px 18px;
   }
   .sum-label {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.15em;
     color: var(--text-dim);
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .sum-value {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 500;
     color: var(--text-primary);
   }
 
   .restart-btn {
-    padding: 14px 32px;
+    padding: 16px 36px;
     background: none;
     border: 1px solid var(--border-gold);
     border-radius: 6px;
     color: var(--gold);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
-    margin-top: 10px;
+    margin-top: 12px;
   }
   .restart-btn:hover { background: var(--gold-faint); }
 
-  /* NAV */
+  /* ── NAV ── */
   .step-nav {
     display: flex;
-    gap: 10px;
-    margin-top: 30px;
-    padding-top: 22px;
+    gap: 12px;
+    margin-top: 34px;
+    padding-top: 24px;
     border-top: 1px solid var(--border);
   }
   .btn-next {
     flex: 1;
-    padding: 16px;
+    padding: 18px;
     background: var(--gold);
     border: none;
     border-radius: 6px;
     color: #0A0A09;
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     cursor: pointer;
@@ -507,26 +512,19 @@
   .btn-next:disabled { opacity: 0.32; cursor: not-allowed; }
 
   .btn-back {
-    padding: 16px 20px;
+    padding: 18px 24px;
     background: none;
     border: 1px solid var(--border);
     border-radius: 6px;
     color: var(--text-dim);
     font-family: 'DM Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
   }
   .btn-back:hover { border-color: var(--border-gold); color: var(--text-secondary); }
-
-  .cycle-count {
-    margin-top: 14px;
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-  }
 </style>
 
 <div id="ran-root">
@@ -580,13 +578,12 @@
       <div class="step-num">Intervención 01 · Corte inmediato</div>
       <div class="step-title">Detené el<br><em>estímulo.</em></div>
       <div class="step-desc">Pantalla hacia abajo o bloqueada. Cero input externo por los próximos 60 segundos. No es una pausa. Es una interrupción quirúrgica del circuito de activación.</div>
-
       <div class="breath-area">
         <div class="breath-ring-wrap">
-          <svg class="breath-svg" viewBox="0 0 110 110">
-            <circle class="breath-track" cx="55" cy="55" r="46"/>
-            <circle class="breath-arc" id="countdown-arc" cx="55" cy="55" r="46"
-              stroke-dasharray="289.0" stroke-dashoffset="0"/>
+          <svg class="breath-svg" viewBox="0 0 132 132">
+            <circle class="breath-track" cx="66" cy="66" r="55"/>
+            <circle class="breath-arc" id="countdown-arc" cx="66" cy="66" r="55"
+              stroke-dasharray="345.4" stroke-dashoffset="0"/>
           </svg>
           <div class="breath-center">
             <div class="breath-time" id="countdown-time">60</div>
@@ -594,12 +591,11 @@
           </div>
         </div>
         <div style="flex:1">
-          <div style="font-size:11px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">Instrucciones</div>
+          <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;">Instrucciones</div>
           <div class="breath-side-text">Cerrá los ojos si podés. Respirá sin forzar. El objetivo no es relajarte: es detener el flujo de inputs que amplifican el estado de alarma.</div>
         </div>
       </div>
       <button class="btn-start-breath" id="btn-countdown" onclick="startCountdown()">Iniciar cuenta regresiva</button>
-
       <div class="step-nav">
         <button class="btn-back" onclick="goIdle()">← Volver</button>
         <button class="btn-next" onclick="goStep(2)">Continuar →</button>
@@ -616,13 +612,12 @@
       <div class="step-num">Intervención 02 · Desenganche focal</div>
       <div class="step-title">Respiración<br><em>4 — 2 — 6</em></div>
       <div class="step-desc">Un ciclo completo es suficiente para intervenir el sistema nervioso autónomo. Seguí el ritmo exacto.</div>
-
       <div class="breath-area">
         <div class="breath-ring-wrap">
-          <svg class="breath-svg" viewBox="0 0 110 110">
-            <circle class="breath-track" cx="55" cy="55" r="46"/>
-            <circle class="breath-arc" id="breath-arc" cx="55" cy="55" r="46"
-              stroke-dasharray="289.0" stroke-dashoffset="289.0"/>
+          <svg class="breath-svg" viewBox="0 0 132 132">
+            <circle class="breath-track" cx="66" cy="66" r="55"/>
+            <circle class="breath-arc" id="breath-arc" cx="66" cy="66" r="55"
+              stroke-dasharray="345.4" stroke-dashoffset="345.4"/>
           </svg>
           <div class="breath-center">
             <div class="breath-time" id="breath-time">—</div>
@@ -649,7 +644,6 @@
         </div>
       </div>
       <button class="btn-start-breath" id="btn-breath" onclick="startBreath()">Iniciar guía de respiración</button>
-
       <div class="step-nav">
         <button class="btn-back" onclick="goStep(1)">← Volver</button>
         <button class="btn-next" onclick="goStep(3)">Continuar →</button>
@@ -666,7 +660,6 @@
       <div class="step-num">Intervención 03 · Diagnóstico post-pausa</div>
       <div class="step-title">¿Cuál es tu<br><em>estado real</em> ahora?</div>
       <div class="step-desc">No el que querés tener. El que tenés. La precisión del diagnóstico determina la calidad de lo que viene después.</div>
-
       <div class="state-grid">
         <div class="state-chip" onclick="selectState(this,'saturacion','stop')">Saturación</div>
         <div class="state-chip" onclick="selectState(this,'fatiga','wait')">Fatiga</div>
@@ -674,10 +667,8 @@
         <div class="state-chip" onclick="selectState(this,'claridad','go')">Claridad</div>
         <div class="state-chip" onclick="selectState(this,'ran','go')">Estado RAN</div>
       </div>
-
-      <div style="font-size:11px;letter-spacing:0.15em;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;">Foco para los próximos 50 min</div>
+      <div class="focus-label">Foco para los próximos 50 min</div>
       <textarea class="focus-field" id="focus-input" placeholder="¿Cuál es lo único que importa ahora?" rows="2"></textarea>
-
       <div class="step-nav">
         <button class="btn-back" onclick="goStep(2)">← Volver</button>
         <button class="btn-next" id="next-s3" onclick="goStep(4)" disabled>Ver veredicto →</button>
@@ -697,7 +688,6 @@
         <div class="gono-sub" id="gono-sub">Calculando estado</div>
       </div>
       <div class="gono-rationale" id="gono-rationale">Completá el diagnóstico para recibir el veredicto.</div>
-
       <div class="step-nav">
         <button class="btn-back" onclick="goStep(3)">← Revisar</button>
         <button class="btn-next" onclick="complete()">Registrar y cerrar →</button>
@@ -710,11 +700,10 @@
         <div class="complete-mark">Protocolo completado</div>
         <div class="complete-title">Sistema<br>calibrado</div>
         <div class="complete-sub">Intervención ejecutada · Estado registrado</div>
-
         <div class="summary-grid">
           <div class="sum-card">
             <div class="sum-label">Contexto</div>
-            <div class="sum-value" id="sum-ctx" style="font-size:17px;">—</div>
+            <div class="sum-value" id="sum-ctx" style="font-size:19px;">—</div>
           </div>
           <div class="sum-card">
             <div class="sum-label">Estado final</div>
@@ -725,9 +714,7 @@
             <div class="sum-value" id="sum-verdict">—</div>
           </div>
         </div>
-
-        <div class="gono-rationale" id="complete-focus" style="margin:16px 0;text-align:left;"></div>
-
+        <div class="gono-rationale" id="complete-focus" style="margin:18px 0;text-align:left;"></div>
         <button class="restart-btn" onclick="goIdle()">Nueva intervención</button>
       </div>
     </div>
@@ -736,7 +723,7 @@
 </div>
 
 <script>
-  const CIRC = 2 * Math.PI * 46;
+  const CIRC = 2 * Math.PI * 55;
   let selectedCtx = null, selectedStateKey = null, selectedVerdict = null;
   let countdownTimer = null, breathTimer = null;
 
@@ -751,6 +738,11 @@
     document.getElementById('status-dot').className = 'status-dot active';
     document.getElementById('status-text').textContent = 'Protocolo activo';
     goStep(1);
+  }
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
   }
 
   function goIdle() {
@@ -768,11 +760,6 @@
     showScreen('idle');
     document.getElementById('status-dot').className = 'status-dot';
     document.getElementById('status-text').textContent = 'En espera';
-  }
-
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-' + id).classList.add('active');
   }
 
   function goStep(n) {
@@ -798,7 +785,7 @@
 
   function clearTimers() {
     if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
-    if (breathTimer) { clearInterval(breathTimer); breathTimer = null; }
+    if (breathTimer)    { clearInterval(breathTimer);    breathTimer    = null; }
   }
 
   function resetCountdownUI() {
@@ -841,8 +828,7 @@
       timeEl.textContent = secs;
       arc.style.strokeDashoffset = CIRC * (secs / 60);
       if (secs <= 0) {
-        clearInterval(countdownTimer);
-        countdownTimer = null;
+        clearInterval(countdownTimer); countdownTimer = null;
         btn.textContent = 'Completado';
       }
     }, 1000);
@@ -859,41 +845,33 @@
     ];
     const TOTAL_SECS = 12;
     let phaseIdx = 0, phaseMs = 0, totalMs = 0, cycles = 0;
-    const arc = document.getElementById('breath-arc');
+    const arc    = document.getElementById('breath-arc');
     const timeEl = document.getElementById('breath-time');
-    const labelEl = document.getElementById('breath-label');
-    const cycleEl = document.getElementById('cycle-counter');
+    const lblEl  = document.getElementById('breath-label');
+    const cycleEl= document.getElementById('cycle-counter');
     const labels = {inhale:'Inhalar', hold:'Sostener', exhale:'Exhalar'};
-    const TICK = 100;
+    const TICK   = 100;
 
     function activatePhase(idx) {
       PHASES.forEach((p, i) => {
-        const ph = document.getElementById('ph-' + p.id);
-        if (i === idx) ph.classList.add('ph-active');
-        else ph.classList.remove('ph-active');
+        document.getElementById('ph-' + p.id).classList.toggle('ph-active', i === idx);
         document.getElementById(p.barId).style.width = i < idx ? '100%' : '0%';
       });
-      labelEl.textContent = labels[PHASES[idx].id];
+      lblEl.textContent = labels[PHASES[idx].id];
     }
-
     activatePhase(0);
 
     breathTimer = setInterval(() => {
-      phaseMs += TICK;
-      totalMs += TICK;
+      phaseMs += TICK; totalMs += TICK;
       const cur = PHASES[phaseIdx];
-      const pct = Math.min(phaseMs / (cur.secs * 1000), 1);
-      document.getElementById(cur.barId).style.width = Math.round(pct * 100) + '%';
+      document.getElementById(cur.barId).style.width = Math.round(Math.min(phaseMs / (cur.secs * 1000), 1) * 100) + '%';
       timeEl.textContent = Math.max(Math.ceil((cur.secs * 1000 - phaseMs) / 1000), 0);
       arc.style.strokeDashoffset = CIRC * (1 - Math.min(totalMs / (TOTAL_SECS * 1000), 1));
 
       if (phaseMs >= cur.secs * 1000) {
-        phaseMs = 0;
-        phaseIdx++;
+        phaseMs = 0; phaseIdx++;
         if (phaseIdx >= PHASES.length) {
-          phaseIdx = 0;
-          totalMs = 0;
-          cycles++;
+          phaseIdx = 0; totalMs = 0; cycles++;
           arc.style.strokeDashoffset = CIRC;
           cycleEl.textContent = cycles + (cycles === 1 ? ' ciclo completado' : ' ciclos completados');
           if (cycles >= 3) {
@@ -902,8 +880,7 @@
               document.getElementById(p.barId).style.width = '100%';
               document.getElementById('ph-' + p.id).classList.remove('ph-active');
             });
-            timeEl.textContent = '';
-            labelEl.textContent = '';
+            timeEl.textContent = ''; lblEl.textContent = '';
             arc.style.strokeDashoffset = 0;
             btn.textContent = '3 ciclos completados';
             return;
@@ -917,30 +894,26 @@
   function selectState(el, key, verdict) {
     document.querySelectorAll('.state-chip').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
-    selectedStateKey = key;
-    selectedVerdict = verdict;
+    selectedStateKey = key; selectedVerdict = verdict;
     document.getElementById('next-s3').disabled = false;
   }
 
   function computeVerdict() {
     const data = {
       go: {
-        text: 'GO',
-        cls: 'gono-go',
-        sub: 'Sistema autorizado para operar',
-        rationale: 'Tu estado cognitivo está dentro del rango de precisión ejecutiva. Podés proceder con la decisión o situación activa. Mantené el foco único que definiste y ejecutá desde la claridad, no desde el impulso.'
+        text:'GO', cls:'gono-go',
+        sub:'Sistema autorizado para operar',
+        rationale:'Tu estado cognitivo está dentro del rango de precisión ejecutiva. Podés proceder con la decisión o situación activa. Mantené el foco único que definiste y ejecutá desde la claridad, no desde el impulso.'
       },
       wait: {
-        text: 'ESPERAR',
-        cls: 'gono-wait',
-        sub: 'Estado sub-óptimo — diferir si es posible',
-        rationale: 'Tu sistema está en modo de carga. Si la decisión puede esperar 20–30 minutos, esperá. Si no puede, aplicá un segundo ciclo 4-2-6 antes de proceder. Reducí el alcance de lo que decidís ahora a lo estrictamente necesario.'
+        text:'ESPERAR', cls:'gono-wait',
+        sub:'Estado sub-óptimo — diferir si es posible',
+        rationale:'Tu sistema está en modo de carga. Si la decisión puede esperar 20–30 minutos, esperá. Si no puede, aplicá un segundo ciclo 4-2-6 antes de proceder. Reducí el alcance de lo que decidís ahora a lo estrictamente necesario.'
       },
       stop: {
-        text: 'NO GO',
-        cls: 'gono-stop',
-        sub: 'Saturación detectada — no decidir',
-        rationale: 'Tu biología está operando en modo de saturación. Las decisiones tomadas en este estado tienen una tasa de error significativamente elevada. Diferí todo lo que sea diferible. Si algo es urgente e impostergable, delegá o pedí más tiempo antes de comprometerte.'
+        text:'NO GO', cls:'gono-stop',
+        sub:'Saturación detectada — no decidir',
+        rationale:'Tu biología está operando en modo de saturación. Las decisiones tomadas en este estado tienen una tasa de error significativamente elevada. Diferí todo lo que sea diferible. Si algo es urgente, delegá o pedí más tiempo antes de comprometerte.'
       }
     };
     const v = data[selectedVerdict] || data['wait'];
@@ -956,7 +929,7 @@
     document.getElementById('status-dot').className = 'status-dot done';
     document.getElementById('status-text').textContent = 'Completado';
     const stateLabels = {saturacion:'Saturación', fatiga:'Fatiga', operativo:'Operativo', claridad:'Claridad', ran:'Estado RAN'};
-    document.getElementById('sum-ctx').textContent = selectedCtx || '—';
+    document.getElementById('sum-ctx').textContent   = selectedCtx || '—';
     document.getElementById('sum-state').textContent = stateLabels[selectedStateKey] || '—';
     document.getElementById('sum-verdict').textContent = selectedVerdict === 'go' ? 'GO' : selectedVerdict === 'wait' ? 'ESPERAR' : 'NO GO';
     const focusVal = document.getElementById('focus-input').value;
