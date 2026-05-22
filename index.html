@@ -31,6 +31,7 @@
     overflow: hidden;
   }
 
+  /* TOP BAR */
   .top-bar {
     display: flex;
     align-items: center;
@@ -39,7 +40,6 @@
     border-bottom: 1px solid var(--border);
     background: var(--surface-2);
   }
-
   .brand {
     font-family: 'Cormorant Garamond', serif;
     font-size: 15px;
@@ -48,7 +48,6 @@
     text-transform: uppercase;
     font-weight: 600;
   }
-
   .status-badge {
     display: flex;
     align-items: center;
@@ -58,7 +57,6 @@
     color: var(--text-dim);
     text-transform: uppercase;
   }
-
   .status-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
@@ -73,10 +71,12 @@
     50%     { opacity:0.45; transform:scale(0.75); }
   }
 
+  /* LAYOUT */
   .main-area { padding: 38px 32px 34px; }
   .screen { display: none; }
   .screen.active { display: block; }
 
+  /* IDLE */
   .idle-header { text-align: center; padding: 8px 0 32px; }
   .idle-title {
     font-family: 'Cormorant Garamond', serif;
@@ -101,14 +101,12 @@
     text-transform: uppercase;
     margin-bottom: 14px;
   }
-
   .context-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
     margin: 20px 0;
   }
-
   .context-card {
     background: var(--surface-3);
     border: 1px solid var(--border);
@@ -165,6 +163,7 @@
   .activate-btn:hover { background: #D4AB35; transform: translateY(-1px); }
   .activate-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
+  /* STEP HEADER */
   .step-header {
     display: flex;
     align-items: center;
@@ -199,6 +198,7 @@
   }
   .abort-btn:hover { color: var(--text-secondary); background: var(--surface-3); }
 
+  /* STEP CONTENT */
   .step-num {
     font-size: 13px;
     letter-spacing: 0.2em;
@@ -223,6 +223,7 @@
     letter-spacing: 0.02em;
   }
 
+  /* BREATH / COUNTDOWN RING */
   .breath-area {
     display: flex;
     align-items: center;
@@ -265,6 +266,7 @@
     text-transform: uppercase;
   }
 
+  /* BREATH PHASES */
   .breath-phases { display: flex; flex-direction: column; gap: 14px; flex: 1; }
   .breath-phase { display: flex; align-items: center; gap: 14px; }
   .phase-label {
@@ -282,7 +284,6 @@
   }
   .phase-bar-fill { height: 100%; border-radius: 2px; transition: width 0.1s linear; }
   .phase-secs { font-size: 13px; color: var(--text-dim); min-width: 22px; text-align: right; }
-
   .ph-inhale .phase-bar-fill { background: var(--blue); }
   .ph-hold   .phase-bar-fill { background: var(--gold); }
   .ph-exhale .phase-bar-fill { background: var(--green); }
@@ -295,7 +296,6 @@
     line-height: 1.75;
     font-family: 'Cormorant Garamond', serif;
   }
-
   .instr-label {
     font-size: 13px;
     color: var(--text-dim);
@@ -303,7 +303,6 @@
     text-transform: uppercase;
     margin-bottom: 14px;
   }
-
   .cycle-count {
     margin-top: 6px;
     font-size: 14px;
@@ -311,6 +310,7 @@
     letter-spacing: 0.1em;
   }
 
+  /* BUTTONS */
   .btn-start-breath {
     padding: 14px 28px;
     background: var(--gold-faint);
@@ -326,7 +326,9 @@
     margin-top: 20px;
   }
   .btn-start-breath:hover { background: var(--gold-glow); }
+  .btn-start-breath:disabled { opacity: 0.4; cursor: not-allowed; }
 
+  /* STATE CHIPS */
   .state-grid { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0 26px; }
   .state-chip {
     padding: 13px 24px;
@@ -344,6 +346,7 @@
   .state-chip:hover { border-color: var(--border-gold); color: var(--text-primary); }
   .state-chip.active { color: var(--gold); border-color: var(--gold); background: var(--gold-faint); }
 
+  /* FOCUS FIELD */
   .focus-label {
     font-size: 13px;
     letter-spacing: 0.15em;
@@ -370,6 +373,7 @@
   .focus-field:focus { border-color: var(--border-gold); background: var(--surface-4); }
   .focus-field::placeholder { color: var(--text-dim); }
 
+  /* VERDICT */
   .gono-display { text-align: center; padding: 20px 0 14px; }
   .gono-verdict {
     font-family: 'Cormorant Garamond', serif;
@@ -403,6 +407,7 @@
     font-style: italic;
   }
 
+  /* COMPLETE */
   .complete-area { text-align: center; padding: 24px 0; }
   .complete-mark {
     font-size: 13px;
@@ -466,6 +471,7 @@
   }
   .restart-btn:hover { background: var(--gold-faint); }
 
+  /* NAV */
   .step-nav {
     display: flex;
     gap: 12px;
@@ -504,6 +510,7 @@
   }
   .btn-back:hover { border-color: var(--border-gold); color: var(--text-secondary); }
 
+  /* VOICE INDICATOR */
   .voice-indicator {
     display: inline-flex;
     align-items: center;
@@ -723,11 +730,20 @@
 </div>
 
 <script>
+  // ── Constants ──────────────────────────────────────────────────────────────
   const CIRC = 2 * Math.PI * 55;
-  let selectedCtx = null, selectedStateKey = null, selectedVerdict = null;
-  let countdownTimer = null, breathTimer = null;
-  let audioCtx = null;
 
+
+
+  // ── State ──────────────────────────────────────────────────────────────────
+  let selectedCtx      = null;
+  let selectedStateKey = null;
+  let selectedVerdict  = null;
+  let countdownTimer   = null;
+  let breathTimer      = null;
+  let audioCtx         = null;
+
+  // ── Audio beep ─────────────────────────────────────────────────────────────
   function getAudioCtx() {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     return audioCtx;
@@ -735,8 +751,8 @@
 
   function playPip(vol = 0.06, freq = 880, dur = 0.045) {
     try {
-      const ctx = getAudioCtx();
-      const osc = ctx.createOscillator();
+      const ctx  = getAudioCtx();
+      const osc  = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.connect(gain);
       gain.connect(ctx.destination);
@@ -750,25 +766,89 @@
     } catch(e) {}
   }
 
-  function speak(text, rate = 0.88, pitch = 0.95, vol = 0.9) {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'es-ES';
-    utt.rate = rate;
-    utt.pitch = pitch;
-    utt.volume = vol;
-    const vDot = document.getElementById('voice-dot');
-    const vSt  = document.getElementById('voice-status');
-    if (vDot) { vDot.classList.add('speaking'); }
-    if (vSt)  { vSt.textContent = 'Voz activa'; }
-    utt.onend = () => {
-      if (vDot) vDot.classList.remove('speaking');
-      if (vSt)  vSt.textContent = 'Voz en espera';
-    };
-    window.speechSynthesis.speak(utt);
+  // ── Web Speech TTS (español, voz masculina) ────────────────────────────────
+  // Priority list: preferred male Spanish voices across OS/browser
+  const VOICE_PRIORITY = [
+    'Jorge',           // macOS – español España, natural
+    'Diego',           // macOS – español Latinoamérica
+    'Mónica',          // fallback macOS femenino si no hay masculino
+    'Microsoft Pablo Online (Natural)',  // Windows 11 neural
+    'Microsoft Raul Online (Natural)',   // Windows 11 neural
+    'Microsoft Pablo',                   // Windows legacy
+    'Google español',                    // Android / Chrome
+    'Google español de Estados Unidos',
+  ];
+
+  let _voicesReady = false;
+  let _voiceCache  = null;
+
+  function pickVoice() {
+    if (_voiceCache) return _voiceCache;
+    const all = window.speechSynthesis.getVoices();
+    if (!all.length) return null;
+
+    // 1. Try priority list in order
+    for (const name of VOICE_PRIORITY) {
+      const v = all.find(v => v.name === name);
+      if (v) { _voiceCache = v; return v; }
+    }
+    // 2. Any male-sounding Spanish voice (heuristic: name contains common male names)
+    const maleHints = ['pablo','raul','diego','jorge','juan','carlos','miguel','antonio','jose','david'];
+    const maleVoice = all.find(v =>
+      v.lang.startsWith('es') &&
+      maleHints.some(h => v.name.toLowerCase().includes(h))
+    );
+    if (maleVoice) { _voiceCache = maleVoice; return maleVoice; }
+
+    // 3. Any Spanish voice
+    const esVoice = all.find(v => v.lang.startsWith('es'));
+    if (esVoice) { _voiceCache = esVoice; return esVoice; }
+
+    return null;
   }
 
+  function speak(text) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+
+    const vDot = document.getElementById('voice-dot');
+    const vSt  = document.getElementById('voice-status');
+
+    const doSpeak = () => {
+      const utt   = new SpeechSynthesisUtterance(text);
+      const voice = pickVoice();
+      if (voice) {
+        utt.voice = voice;
+        utt.lang  = voice.lang;
+      } else {
+        utt.lang = 'es-ES';
+      }
+      utt.rate   = 0.9;
+      utt.pitch  = 0.85;   // slightly lower = more masculine/calm
+      utt.volume = 0.92;
+
+      if (vDot) vDot.classList.add('speaking');
+      if (vSt)  vSt.textContent = voice ? `Voz: ${voice.name}` : 'Voz activa';
+
+      utt.onend = () => {
+        if (vDot) vDot.classList.remove('speaking');
+        if (vSt)  vSt.textContent = 'Voz en espera';
+      };
+      window.speechSynthesis.speak(utt);
+    };
+
+    // Voices may not be loaded on first call
+    if (window.speechSynthesis.getVoices().length > 0) {
+      doSpeak();
+    } else {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.onvoiceschanged = null;
+        doSpeak();
+      };
+    }
+  }
+
+  // ── Navigation ─────────────────────────────────────────────────────────────
   function selectCtx(el, ctx) {
     document.querySelectorAll('.context-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
@@ -792,7 +872,7 @@
     showScreen('idle');
     document.getElementById('status-dot').className = 'status-dot';
     document.getElementById('status-text').textContent = 'En espera';
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    
   }
 
   function abortProtocol() {
@@ -803,12 +883,12 @@
     showScreen('idle');
     document.getElementById('status-dot').className = 'status-dot';
     document.getElementById('status-text').textContent = 'En espera';
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    
   }
 
   function goStep(n) {
     clearTimers();
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    
     resetBreathUI();
     resetCountdownUI();
     showScreen('s' + n);
@@ -817,7 +897,7 @@
 
   function clearAll() {
     clearTimers();
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    
     resetBreathUI();
     resetCountdownUI();
     selectedStateKey = null;
@@ -834,6 +914,7 @@
     if (breathTimer)    { clearInterval(breathTimer);    breathTimer    = null; }
   }
 
+  // ── UI resets ──────────────────────────────────────────────────────────────
   function resetCountdownUI() {
     const arc = document.getElementById('countdown-arc');
     if (arc) arc.style.strokeDashoffset = '0';
@@ -866,12 +947,13 @@
     if (vs) vs.textContent = 'Voz en espera';
   }
 
+  // ── Countdown (Step 1) ────────────────────────────────────────────────────
   function startCountdown() {
     const btn = document.getElementById('btn-countdown');
     if (btn.disabled) return;
     btn.disabled = true;
     btn.textContent = 'Corriendo...';
-    const arc = document.getElementById('countdown-arc');
+    const arc    = document.getElementById('countdown-arc');
     const timeEl = document.getElementById('countdown-time');
     let secs = 60;
 
@@ -888,6 +970,7 @@
     }, 1000);
   }
 
+  // ── Breathing guide (Step 2) ──────────────────────────────────────────────
   function startBreath() {
     const btn = document.getElementById('btn-breath');
     if (btn.disabled) return;
@@ -895,9 +978,9 @@
     btn.textContent = 'Guía activa...';
 
     const PHASES = [
-      {id:'inhale', secs:4,  barId:'bar-inhale', text:'Inhalar'},
-      {id:'hold',   secs:2,  barId:'bar-hold',   text:'Sostener'},
-      {id:'exhale', secs:6,  barId:'bar-exhale', text:'Exhalar'}
+      { id:'inhale', secs:4,  barId:'bar-inhale', text:'Inhalar'  },
+      { id:'hold',   secs:2,  barId:'bar-hold',   text:'Sostener' },
+      { id:'exhale', secs:6,  barId:'bar-exhale', text:'Exhalar'  }
     ];
     const TOTAL_SECS = 12;
     let phaseIdx = 0, phaseMs = 0, totalMs = 0, cycles = 0;
@@ -907,7 +990,7 @@
     const timeEl = document.getElementById('breath-time');
     const lblEl  = document.getElementById('breath-label');
     const cycleEl= document.getElementById('cycle-counter');
-    const TICK = 100;
+    const TICK   = 100;
 
     function activatePhase(idx) {
       PHASES.forEach((p, i) => {
@@ -917,7 +1000,7 @@
       lblEl.textContent = PHASES[idx].text;
       if (idx !== lastSpokenPhase) {
         lastSpokenPhase = idx;
-        speak(PHASES[idx].text, 0.82, 0.9, 0.85);
+        speak(PHASES[idx].text);
       }
     }
 
@@ -926,7 +1009,8 @@
     breathTimer = setInterval(() => {
       phaseMs += TICK; totalMs += TICK;
       const cur = PHASES[phaseIdx];
-      document.getElementById(cur.barId).style.width = Math.round(Math.min(phaseMs / (cur.secs * 1000), 1) * 100) + '%';
+      document.getElementById(cur.barId).style.width =
+        Math.round(Math.min(phaseMs / (cur.secs * 1000), 1) * 100) + '%';
       const secsLeft = Math.max(Math.ceil((cur.secs * 1000 - phaseMs) / 1000), 0);
       timeEl.textContent = secsLeft;
       arc.style.strokeDashoffset = CIRC * (1 - Math.min(totalMs / (TOTAL_SECS * 1000), 1));
@@ -947,7 +1031,7 @@
             timeEl.textContent = ''; lblEl.textContent = '';
             arc.style.strokeDashoffset = 0;
             btn.textContent = '3 ciclos completados';
-            setTimeout(() => speak('Completado. Muy bien.', 0.8, 0.9), 200);
+            setTimeout(() => speak('Completado. Muy bien.'), 200);
             return;
           }
         }
@@ -956,52 +1040,74 @@
     }, TICK);
   }
 
+  // ── State selection (Step 3) ───────────────────────────────────────────────
   function selectState(el, key, verdict) {
     document.querySelectorAll('.state-chip').forEach(c => c.classList.remove('active'));
     el.classList.add('active');
-    selectedStateKey = key; selectedVerdict = verdict;
+    selectedStateKey = key;
+    selectedVerdict  = verdict;
     document.getElementById('next-s3').disabled = false;
   }
 
+  // ── Verdict (Step 4) ───────────────────────────────────────────────────────
   function computeVerdict() {
     const data = {
       go: {
-        text:'GO', cls:'gono-go',
-        sub:'Sistema autorizado para operar',
-        rationale:'Tu estado cognitivo está dentro del rango de precisión ejecutiva. Podés proceder con la decisión o situación activa. Mantené el foco único que definiste y ejecutá desde la claridad, no desde el impulso.'
+        text: 'GO',
+        cls:  'gono-go',
+        sub:  'Sistema autorizado para operar',
+        rationale: 'Tu estado cognitivo está dentro del rango de precisión ejecutiva. Podés proceder con la decisión o situación activa. Mantené el foco único que definiste y ejecutá desde la claridad, no desde el impulso.'
       },
       wait: {
-        text:'ESPERAR', cls:'gono-wait',
-        sub:'Estado sub-óptimo — diferir si es posible',
-        rationale:'Tu sistema está en modo de carga. Si la decisión puede esperar 20 a 30 minutos, esperá. Si no puede, aplicá un segundo ciclo antes de proceder. Reducí el alcance de lo que decidís ahora a lo estrictamente necesario.'
+        text: 'ESPERAR',
+        cls:  'gono-wait',
+        sub:  'Estado sub-óptimo — diferir si es posible',
+        rationale: 'Tu sistema está en modo de carga. Si la decisión puede esperar 20 a 30 minutos, esperá. Si no puede, aplicá un segundo ciclo antes de proceder. Reducí el alcance de lo que decidís ahora a lo estrictamente necesario.'
       },
       stop: {
-        text:'NO GO', cls:'gono-stop',
-        sub:'Saturación detectada — no decidir',
-        rationale:'Tu biología está operando en modo de saturación. Las decisiones tomadas en este estado tienen una tasa de error significativamente elevada. Diferí todo lo que sea diferible. Si algo es urgente, delegá o pedí más tiempo antes de comprometerte.'
+        text: 'NO GO',
+        cls:  'gono-stop',
+        sub:  'Saturación detectada — no decidir',
+        rationale: 'Tu biología está operando en modo de saturación. Las decisiones tomadas en este estado tienen una tasa de error significativamente elevada. Diferí todo lo que sea diferible. Si algo es urgente, delegá o pedí más tiempo antes de comprometerte.'
       }
     };
-    const v = data[selectedVerdict] || data['wait'];
+
+    const v   = data[selectedVerdict] || data['wait'];
     const vEl = document.getElementById('gono-verdict');
     vEl.textContent = v.text;
-    vEl.className = 'gono-verdict ' + v.cls;
-    document.getElementById('gono-sub').textContent = v.sub;
+    vEl.className   = 'gono-verdict ' + v.cls;
+    document.getElementById('gono-sub').textContent      = v.sub;
     document.getElementById('gono-rationale').textContent = v.rationale;
-    setTimeout(() => {
-      const verdictTexts = {go:'Sistema autorizado. Podés operar.', wait:'Estado sub óptimo. Diferí si es posible.', stop:'Saturación detectada. No decidir ahora.'};
-      speak(verdictTexts[selectedVerdict] || verdictTexts['wait'], 0.82, 0.9);
-    }, 400);
+
+    const verdictTexts = {
+      go:   'Sistema autorizado. Podés operar.',
+      wait: 'Estado sub óptimo. Diferí si es posible.',
+      stop: 'Saturación detectada. No decidir ahora.'
+    };
+    setTimeout(() => speak(verdictTexts[selectedVerdict] || verdictTexts['wait']), 400);
   }
 
+  // ── Complete ───────────────────────────────────────────────────────────────
   function complete() {
     showScreen('complete');
-    document.getElementById('status-dot').className = 'status-dot done';
+    document.getElementById('status-dot').className    = 'status-dot done';
     document.getElementById('status-text').textContent = 'Completado';
-    const stateLabels = {saturacion:'Saturación', fatiga:'Fatiga', operativo:'Operativo', claridad:'Claridad', ran:'Estado RAN'};
+
+    const stateLabels = {
+      saturacion: 'Saturación',
+      fatiga:     'Fatiga',
+      operativo:  'Operativo',
+      claridad:   'Claridad',
+      ran:        'Estado RAN'
+    };
+
     document.getElementById('sum-ctx').textContent    = selectedCtx || '—';
     document.getElementById('sum-state').textContent  = stateLabels[selectedStateKey] || '—';
-    document.getElementById('sum-verdict').textContent = selectedVerdict === 'go' ? 'GO' : selectedVerdict === 'wait' ? 'ESPERAR' : 'NO GO';
+    document.getElementById('sum-verdict').textContent =
+      selectedVerdict === 'go' ? 'GO' : selectedVerdict === 'wait' ? 'ESPERAR' : 'NO GO';
+
     const focusVal = document.getElementById('focus-input').value;
-    document.getElementById('complete-focus').textContent = focusVal ? '"' + focusVal + '"' : 'Sin foco definido.';
+    document.getElementById('complete-focus').textContent =
+      focusVal ? '"' + focusVal + '"' : 'Sin foco definido.';
   }
 </script>
