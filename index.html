@@ -74,13 +74,10 @@
   }
 
   .main-area { padding: 38px 32px 34px; }
-
   .screen { display: none; }
   .screen.active { display: block; }
 
-  /* ── IDLE ── */
   .idle-header { text-align: center; padding: 8px 0 32px; }
-
   .idle-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 62px;
@@ -89,7 +86,6 @@
     line-height: 1.1;
   }
   .idle-title em { font-style: italic; color: var(--gold); }
-
   .idle-sub {
     font-size: 14px;
     letter-spacing: 0.18em;
@@ -169,14 +165,12 @@
   .activate-btn:hover { background: #D4AB35; transform: translateY(-1px); }
   .activate-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
-  /* ── STEP HEADER ── */
   .step-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 32px;
   }
-
   .step-counter {
     font-size: 13px;
     letter-spacing: 0.18em;
@@ -184,7 +178,6 @@
     text-transform: uppercase;
   }
   .step-counter span { color: var(--gold); }
-
   .progress-track {
     flex: 1;
     height: 1px;
@@ -192,7 +185,6 @@
     margin: 0 20px;
   }
   .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; }
-
   .abort-btn {
     font-size: 12px;
     letter-spacing: 0.12em;
@@ -207,7 +199,6 @@
   }
   .abort-btn:hover { color: var(--text-secondary); background: var(--surface-3); }
 
-  /* ── STEP CONTENT ── */
   .step-num {
     font-size: 13px;
     letter-spacing: 0.2em;
@@ -215,7 +206,6 @@
     text-transform: uppercase;
     margin-bottom: 12px;
   }
-
   .step-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 55px;
@@ -225,23 +215,20 @@
     margin-bottom: 20px;
   }
   .step-title em { font-style: italic; color: var(--gold); }
-
   .step-desc {
-    font-size: 16px;
+    font-size: 17px;
     color: var(--text-secondary);
-    line-height: 1.75;
+    line-height: 1.8;
     margin-bottom: 28px;
     letter-spacing: 0.02em;
   }
 
-  /* ── BREATH RING ── */
   .breath-area {
     display: flex;
     align-items: center;
     gap: 32px;
     margin: 22px 0;
   }
-
   .breath-ring-wrap {
     position: relative;
     width: 132px; height: 132px;
@@ -278,15 +265,13 @@
     text-transform: uppercase;
   }
 
-  .breath-phases { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-
+  .breath-phases { display: flex; flex-direction: column; gap: 14px; flex: 1; }
   .breath-phase { display: flex; align-items: center; gap: 14px; }
-
   .phase-label {
-    width: 76px;
+    width: 80px;
     color: var(--text-dim);
     letter-spacing: 0.1em;
-    font-size: 12px;
+    font-size: 13px;
     text-transform: uppercase;
   }
   .phase-bar-track {
@@ -296,30 +281,44 @@
     overflow: hidden;
   }
   .phase-bar-fill { height: 100%; border-radius: 2px; transition: width 0.1s linear; }
-  .phase-secs { font-size: 12px; color: var(--text-dim); min-width: 20px; text-align: right; }
+  .phase-secs { font-size: 13px; color: var(--text-dim); min-width: 22px; text-align: right; }
 
   .ph-inhale .phase-bar-fill { background: var(--blue); }
   .ph-hold   .phase-bar-fill { background: var(--gold); }
   .ph-exhale .phase-bar-fill { background: var(--green); }
-
   .breath-phase.ph-active .phase-label { color: var(--text-primary); }
   .breath-phase.ph-active .phase-secs  { color: var(--gold); }
 
   .breath-side-text {
-    font-size: 18px;
+    font-size: 19px;
     color: var(--text-secondary);
-    line-height: 1.7;
+    line-height: 1.75;
     font-family: 'Cormorant Garamond', serif;
   }
 
+  .instr-label {
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .cycle-count {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
   .btn-start-breath {
-    padding: 13px 26px;
+    padding: 14px 28px;
     background: var(--gold-faint);
     border: 1px solid var(--border-gold);
     border-radius: 6px;
     color: var(--gold);
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     cursor: pointer;
@@ -328,23 +327,14 @@
   }
   .btn-start-breath:hover { background: var(--gold-glow); }
 
-  .cycle-count {
-    margin-top: 14px;
-    font-size: 13px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-  }
-
-  /* ── STATE CHIPS ── */
   .state-grid { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0 26px; }
-
   .state-chip {
-    padding: 12px 22px;
+    padding: 13px 24px;
     border-radius: 100px;
     border: 1px solid var(--border);
     background: var(--surface-3);
     cursor: pointer;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     transition: all 0.2s;
@@ -355,13 +345,12 @@
   .state-chip.active { color: var(--gold); border-color: var(--gold); background: var(--gold-faint); }
 
   .focus-label {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.15em;
     color: var(--text-dim);
     text-transform: uppercase;
     margin-bottom: 12px;
   }
-
   .focus-field {
     width: 100%;
     background: var(--surface-3);
@@ -377,14 +366,11 @@
     resize: none;
     min-height: 88px;
     margin: 0 0 4px;
-    letter-spacing: 0.01em;
   }
   .focus-field:focus { border-color: var(--border-gold); background: var(--surface-4); }
   .focus-field::placeholder { color: var(--text-dim); }
 
-  /* ── GO / NO-GO ── */
   .gono-display { text-align: center; padding: 20px 0 14px; }
-
   .gono-verdict {
     font-family: 'Cormorant Garamond', serif;
     font-size: 96px;
@@ -395,15 +381,13 @@
   .gono-go   { color: var(--green); }
   .gono-wait { color: var(--amber); }
   .gono-stop { color: var(--red); }
-
   .gono-sub {
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.18em;
     color: var(--text-dim);
     text-transform: uppercase;
     margin-bottom: 24px;
   }
-
   .gono-rationale {
     background: var(--surface-3);
     border: 1px solid var(--border);
@@ -411,7 +395,7 @@
     border-radius: 0 6px 6px 0;
     padding: 20px 24px;
     color: var(--text-secondary);
-    line-height: 1.75;
+    line-height: 1.8;
     text-align: left;
     margin: 16px 0;
     font-family: 'Cormorant Garamond', serif;
@@ -419,9 +403,7 @@
     font-style: italic;
   }
 
-  /* ── COMPLETE ── */
   .complete-area { text-align: center; padding: 24px 0; }
-
   .complete-mark {
     font-size: 13px;
     letter-spacing: 0.22em;
@@ -437,13 +419,12 @@
     margin-bottom: 12px;
   }
   .complete-sub {
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.1em;
     color: var(--text-dim);
     margin-bottom: 30px;
     line-height: 1.6;
   }
-
   .summary-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -457,7 +438,7 @@
     padding: 16px 18px;
   }
   .sum-label {
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.15em;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -469,7 +450,6 @@
     font-weight: 500;
     color: var(--text-primary);
   }
-
   .restart-btn {
     padding: 16px 36px;
     background: none;
@@ -477,7 +457,7 @@
     border-radius: 6px;
     color: var(--gold);
     font-family: 'DM Mono', monospace;
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     cursor: pointer;
@@ -486,7 +466,6 @@
   }
   .restart-btn:hover { background: var(--gold-faint); }
 
-  /* ── NAV ── */
   .step-nav {
     display: flex;
     gap: 12px;
@@ -510,7 +489,6 @@
   }
   .btn-next:hover { background: #D4AB35; }
   .btn-next:disabled { opacity: 0.32; cursor: not-allowed; }
-
   .btn-back {
     padding: 18px 24px;
     background: none;
@@ -525,6 +503,24 @@
     transition: all 0.2s;
   }
   .btn-back:hover { border-color: var(--border-gold); color: var(--text-secondary); }
+
+  .voice-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+  .voice-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+  }
+  .voice-dot.speaking { animation: pulse-dot 0.6s ease-in-out infinite; opacity: 1; }
 </style>
 
 <div id="ran-root">
@@ -591,7 +587,7 @@
           </div>
         </div>
         <div style="flex:1">
-          <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;">Instrucciones</div>
+          <div class="instr-label">Instrucciones</div>
           <div class="breath-side-text">Cerrá los ojos si podés. Respirá sin forzar. El objetivo no es relajarte: es detener el flujo de inputs que amplifican el estado de alarma.</div>
         </div>
       </div>
@@ -611,7 +607,7 @@
       </div>
       <div class="step-num">Intervención 02 · Desenganche focal</div>
       <div class="step-title">Respiración<br><em>4 — 2 — 6</em></div>
-      <div class="step-desc">Un ciclo completo es suficiente para intervenir el sistema nervioso autónomo. Seguí el ritmo exacto.</div>
+      <div class="step-desc">Seguí el ritmo exacto. Una voz te guiará en cada fase. Tres ciclos completos son suficientes para intervenir el sistema nervioso autónomo.</div>
       <div class="breath-area">
         <div class="breath-ring-wrap">
           <svg class="breath-svg" viewBox="0 0 132 132">
@@ -641,6 +637,10 @@
             <div class="phase-secs">6s</div>
           </div>
           <div class="cycle-count" id="cycle-counter">0 ciclos completados</div>
+          <div class="voice-indicator">
+            <div class="voice-dot" id="voice-dot"></div>
+            <span id="voice-status">Voz en espera</span>
+          </div>
         </div>
       </div>
       <button class="btn-start-breath" id="btn-breath" onclick="startBreath()">Iniciar guía de respiración</button>
@@ -726,6 +726,48 @@
   const CIRC = 2 * Math.PI * 55;
   let selectedCtx = null, selectedStateKey = null, selectedVerdict = null;
   let countdownTimer = null, breathTimer = null;
+  let audioCtx = null;
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+  }
+
+  function playPip(vol = 0.06, freq = 880, dur = 0.045) {
+    try {
+      const ctx = getAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.005);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + dur);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + dur + 0.01);
+    } catch(e) {}
+  }
+
+  function speak(text, rate = 0.88, pitch = 0.95, vol = 0.9) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'es-ES';
+    utt.rate = rate;
+    utt.pitch = pitch;
+    utt.volume = vol;
+    const vDot = document.getElementById('voice-dot');
+    const vSt  = document.getElementById('voice-status');
+    if (vDot) { vDot.classList.add('speaking'); }
+    if (vSt)  { vSt.textContent = 'Voz activa'; }
+    utt.onend = () => {
+      if (vDot) vDot.classList.remove('speaking');
+      if (vSt)  vSt.textContent = 'Voz en espera';
+    };
+    window.speechSynthesis.speak(utt);
+  }
 
   function selectCtx(el, ctx) {
     document.querySelectorAll('.context-card').forEach(c => c.classList.remove('selected'));
@@ -750,6 +792,7 @@
     showScreen('idle');
     document.getElementById('status-dot').className = 'status-dot';
     document.getElementById('status-text').textContent = 'En espera';
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
   }
 
   function abortProtocol() {
@@ -760,10 +803,12 @@
     showScreen('idle');
     document.getElementById('status-dot').className = 'status-dot';
     document.getElementById('status-text').textContent = 'En espera';
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
   }
 
   function goStep(n) {
     clearTimers();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
     resetBreathUI();
     resetCountdownUI();
     showScreen('s' + n);
@@ -772,10 +817,11 @@
 
   function clearAll() {
     clearTimers();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
     resetBreathUI();
     resetCountdownUI();
     selectedStateKey = null;
-    selectedVerdict = null;
+    selectedVerdict  = null;
     document.querySelectorAll('.state-chip').forEach(c => c.classList.remove('active'));
     const fi = document.getElementById('focus-input');
     if (fi) fi.value = '';
@@ -814,22 +860,30 @@
     if (cc) cc.textContent = '0 ciclos completados';
     const bb = document.getElementById('btn-breath');
     if (bb) { bb.textContent = 'Iniciar guía de respiración'; bb.disabled = false; }
+    const vd = document.getElementById('voice-dot');
+    if (vd) vd.classList.remove('speaking');
+    const vs = document.getElementById('voice-status');
+    if (vs) vs.textContent = 'Voz en espera';
   }
 
   function startCountdown() {
     const btn = document.getElementById('btn-countdown');
     if (btn.disabled) return;
     btn.disabled = true;
+    btn.textContent = 'Corriendo...';
     const arc = document.getElementById('countdown-arc');
     const timeEl = document.getElementById('countdown-time');
     let secs = 60;
+
     countdownTimer = setInterval(() => {
       secs--;
       timeEl.textContent = secs;
       arc.style.strokeDashoffset = CIRC * (secs / 60);
+      playPip(0.055, secs > 10 ? 660 : 880, 0.04);
       if (secs <= 0) {
         clearInterval(countdownTimer); countdownTimer = null;
         btn.textContent = 'Completado';
+        playPip(0.12, 1047, 0.18);
       }
     }, 1000);
   }
@@ -838,40 +892,50 @@
     const btn = document.getElementById('btn-breath');
     if (btn.disabled) return;
     btn.disabled = true;
+    btn.textContent = 'Guía activa...';
+
     const PHASES = [
-      {id:'inhale', secs:4, barId:'bar-inhale'},
-      {id:'hold',   secs:2, barId:'bar-hold'},
-      {id:'exhale', secs:6, barId:'bar-exhale'}
+      {id:'inhale', secs:4,  barId:'bar-inhale', text:'Inhalar'},
+      {id:'hold',   secs:2,  barId:'bar-hold',   text:'Sostener'},
+      {id:'exhale', secs:6,  barId:'bar-exhale', text:'Exhalar'}
     ];
     const TOTAL_SECS = 12;
     let phaseIdx = 0, phaseMs = 0, totalMs = 0, cycles = 0;
+    let lastSpokenPhase = -1;
+
     const arc    = document.getElementById('breath-arc');
     const timeEl = document.getElementById('breath-time');
     const lblEl  = document.getElementById('breath-label');
     const cycleEl= document.getElementById('cycle-counter');
-    const labels = {inhale:'Inhalar', hold:'Sostener', exhale:'Exhalar'};
-    const TICK   = 100;
+    const TICK = 100;
 
     function activatePhase(idx) {
       PHASES.forEach((p, i) => {
         document.getElementById('ph-' + p.id).classList.toggle('ph-active', i === idx);
         document.getElementById(p.barId).style.width = i < idx ? '100%' : '0%';
       });
-      lblEl.textContent = labels[PHASES[idx].id];
+      lblEl.textContent = PHASES[idx].text;
+      if (idx !== lastSpokenPhase) {
+        lastSpokenPhase = idx;
+        speak(PHASES[idx].text, 0.82, 0.9, 0.85);
+      }
     }
+
     activatePhase(0);
 
     breathTimer = setInterval(() => {
       phaseMs += TICK; totalMs += TICK;
       const cur = PHASES[phaseIdx];
       document.getElementById(cur.barId).style.width = Math.round(Math.min(phaseMs / (cur.secs * 1000), 1) * 100) + '%';
-      timeEl.textContent = Math.max(Math.ceil((cur.secs * 1000 - phaseMs) / 1000), 0);
+      const secsLeft = Math.max(Math.ceil((cur.secs * 1000 - phaseMs) / 1000), 0);
+      timeEl.textContent = secsLeft;
       arc.style.strokeDashoffset = CIRC * (1 - Math.min(totalMs / (TOTAL_SECS * 1000), 1));
 
       if (phaseMs >= cur.secs * 1000) {
         phaseMs = 0; phaseIdx++;
         if (phaseIdx >= PHASES.length) {
           phaseIdx = 0; totalMs = 0; cycles++;
+          lastSpokenPhase = -1;
           arc.style.strokeDashoffset = CIRC;
           cycleEl.textContent = cycles + (cycles === 1 ? ' ciclo completado' : ' ciclos completados');
           if (cycles >= 3) {
@@ -883,6 +947,7 @@
             timeEl.textContent = ''; lblEl.textContent = '';
             arc.style.strokeDashoffset = 0;
             btn.textContent = '3 ciclos completados';
+            setTimeout(() => speak('Completado. Muy bien.', 0.8, 0.9), 200);
             return;
           }
         }
@@ -908,7 +973,7 @@
       wait: {
         text:'ESPERAR', cls:'gono-wait',
         sub:'Estado sub-óptimo — diferir si es posible',
-        rationale:'Tu sistema está en modo de carga. Si la decisión puede esperar 20–30 minutos, esperá. Si no puede, aplicá un segundo ciclo 4-2-6 antes de proceder. Reducí el alcance de lo que decidís ahora a lo estrictamente necesario.'
+        rationale:'Tu sistema está en modo de carga. Si la decisión puede esperar 20 a 30 minutos, esperá. Si no puede, aplicá un segundo ciclo antes de proceder. Reducí el alcance de lo que decidís ahora a lo estrictamente necesario.'
       },
       stop: {
         text:'NO GO', cls:'gono-stop',
@@ -922,6 +987,10 @@
     vEl.className = 'gono-verdict ' + v.cls;
     document.getElementById('gono-sub').textContent = v.sub;
     document.getElementById('gono-rationale').textContent = v.rationale;
+    setTimeout(() => {
+      const verdictTexts = {go:'Sistema autorizado. Podés operar.', wait:'Estado sub óptimo. Diferí si es posible.', stop:'Saturación detectada. No decidir ahora.'};
+      speak(verdictTexts[selectedVerdict] || verdictTexts['wait'], 0.82, 0.9);
+    }, 400);
   }
 
   function complete() {
@@ -929,8 +998,8 @@
     document.getElementById('status-dot').className = 'status-dot done';
     document.getElementById('status-text').textContent = 'Completado';
     const stateLabels = {saturacion:'Saturación', fatiga:'Fatiga', operativo:'Operativo', claridad:'Claridad', ran:'Estado RAN'};
-    document.getElementById('sum-ctx').textContent   = selectedCtx || '—';
-    document.getElementById('sum-state').textContent = stateLabels[selectedStateKey] || '—';
+    document.getElementById('sum-ctx').textContent    = selectedCtx || '—';
+    document.getElementById('sum-state').textContent  = stateLabels[selectedStateKey] || '—';
     document.getElementById('sum-verdict').textContent = selectedVerdict === 'go' ? 'GO' : selectedVerdict === 'wait' ? 'ESPERAR' : 'NO GO';
     const focusVal = document.getElementById('focus-input').value;
     document.getElementById('complete-focus').textContent = focusVal ? '"' + focusVal + '"' : 'Sin foco definido.';
