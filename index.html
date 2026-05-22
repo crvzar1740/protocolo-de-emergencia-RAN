@@ -559,6 +559,131 @@
     cursor: pointer;
   }
   .voice-selector select:focus { border-color: var(--gold); }
+
+  /* ── Apple-style breath circle ───────────────────────────────────────────── */
+  .apple-breath-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin: 28px 0 8px;
+  }
+
+  .apple-breath-orb {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Scale animation driven by JS class */
+  .apple-breath-orb.phase-inhale  { animation: orb-inhale  4s ease-in-out forwards; }
+  .apple-breath-orb.phase-hold    { animation: orb-hold    2s ease-in-out forwards; }
+  .apple-breath-orb.phase-exhale  { animation: orb-exhale  6s ease-in-out forwards; }
+
+  @keyframes orb-inhale  { from { transform: scale(0.72); } to { transform: scale(1); } }
+  @keyframes orb-hold    { from { transform: scale(1);    } to { transform: scale(1); } }
+  @keyframes orb-exhale  { from { transform: scale(1);    } to { transform: scale(0.72); } }
+
+  .apple-breath-svg { width: 260px; height: 260px; transform: rotate(-90deg); }
+
+  .ab-track {
+    fill: none;
+    stroke: rgba(255,255,255,0.06);
+    stroke-width: 3;
+  }
+
+  .ab-arc {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke: var(--gold);
+    transition: stroke-dashoffset 0.12s linear, stroke 0.4s ease;
+  }
+
+  /* Arc color per phase */
+  .ab-arc.arc-inhale { stroke: #3A6EA8; }
+  .ab-arc.arc-hold   { stroke: var(--gold); }
+  .ab-arc.arc-exhale { stroke: #3D8C5E; }
+
+  /* Soft glow behind the orb — subtle, not jarring */
+  .apple-breath-orb::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,149,42,0.07) 0%, transparent 70%);
+    transition: background 0.6s ease;
+    pointer-events: none;
+  }
+  .apple-breath-orb.phase-inhale::before { background: radial-gradient(circle, rgba(58,110,168,0.10) 0%, transparent 70%); }
+  .apple-breath-orb.phase-hold::before   { background: radial-gradient(circle, rgba(184,149,42,0.10) 0%, transparent 70%); }
+  .apple-breath-orb.phase-exhale::before { background: radial-gradient(circle, rgba(61,140,94,0.10) 0%, transparent 70%); }
+
+  .apple-breath-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    pointer-events: none;
+  }
+
+  .ab-phase-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    transition: color 0.4s ease;
+    min-height: 36px;
+  }
+  .phase-inhale .ab-phase-label { color: #6B9ED4; }
+  .phase-hold   .ab-phase-label { color: var(--gold); }
+  .phase-exhale .ab-phase-label { color: #5BAF82; }
+
+  .ab-seconds {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px;
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .ab-unit {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .ab-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ab-cycles {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .ab-voice-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
 </style>
 
 <div id="ran-root">
@@ -646,46 +771,37 @@
       <div class="step-num">Intervención 02 · Desenganche focal</div>
       <div class="step-title">Respiración<br><em>4 — 2 — 6</em></div>
       <div class="step-desc">Seguí el ritmo exacto. Una voz te guiará en cada fase. Tres ciclos completos son suficientes para intervenir el sistema nervioso autónomo.</div>
-      <div class="breath-area">
-        <div class="breath-ring-wrap">
-          <svg class="breath-svg" viewBox="0 0 132 132">
-            <circle class="breath-track" cx="66" cy="66" r="55"/>
-            <circle class="breath-arc" id="breath-arc" cx="66" cy="66" r="55"
-              stroke-dasharray="345.4" stroke-dashoffset="345.4"/>
+      <!-- Apple-style breath circle -->
+      <div class="apple-breath-wrap">
+        <div class="apple-breath-orb" id="breath-orb">
+          <svg class="apple-breath-svg" viewBox="0 0 260 260" id="breath-svg-el">
+            <!-- Track -->
+            <circle class="ab-track" cx="130" cy="130" r="110"/>
+            <!-- Arc — color changes per phase via JS class -->
+            <circle class="ab-arc" id="breath-arc" cx="130" cy="130" r="110"
+              stroke-dasharray="691.2" stroke-dashoffset="691.2"/>
           </svg>
-          <div class="breath-center">
-            <div class="breath-time" id="breath-time">—</div>
-            <div class="breath-unit" id="breath-label">seg</div>
+          <div class="apple-breath-center">
+            <div class="ab-phase-label" id="breath-label">—</div>
+            <div class="ab-seconds" id="breath-time">—</div>
+            <div class="ab-unit">seg</div>
           </div>
         </div>
-        <div class="breath-phases">
-          <div class="breath-phase ph-inhale" id="ph-inhale">
-            <div class="phase-label">Inhalar</div>
-            <div class="phase-bar-track"><div class="phase-bar-fill" id="bar-inhale" style="width:0%"></div></div>
-            <div class="phase-secs">4s</div>
-          </div>
-          <div class="breath-phase ph-hold" id="ph-hold">
-            <div class="phase-label">Sostener</div>
-            <div class="phase-bar-track"><div class="phase-bar-fill" id="bar-hold" style="width:0%"></div></div>
-            <div class="phase-secs">2s</div>
-          </div>
-          <div class="breath-phase ph-exhale" id="ph-exhale">
-            <div class="phase-label">Exhalar</div>
-            <div class="phase-bar-track"><div class="phase-bar-fill" id="bar-exhale" style="width:0%"></div></div>
-            <div class="phase-secs">6s</div>
-          </div>
-          <div class="cycle-count" id="cycle-counter">0 ciclos completados</div>
-          <div class="voice-indicator">
+        <div class="ab-meta">
+          <div class="ab-cycles" id="cycle-counter">0 ciclos completados</div>
+          <div class="ab-voice-row">
             <div class="voice-dot" id="voice-dot"></div>
             <span id="voice-status">Voz en espera</span>
           </div>
-          <div class="voice-selector">
-            <label>Voz</label>
-            <select id="voice-select" onchange="onVoiceChange()">
-              <option>Cargando voces...</option>
-            </select>
-          </div>
         </div>
+      </div>
+
+      <!-- Voice selector -->
+      <div class="voice-selector">
+        <label>Voz</label>
+        <select id="voice-select" onchange="onVoiceChange()">
+          <option>Cargando voces...</option>
+        </select>
       </div>
       <button class="btn-start-breath" id="btn-breath" onclick="startBreath()">Iniciar guía de respiración</button>
       <div class="step-nav">
@@ -963,17 +1079,13 @@
 
   function resetBreathUI() {
     const arc = document.getElementById('breath-arc');
-    if (arc) arc.style.strokeDashoffset = CIRC;
+    if (arc) { arc.style.strokeDashoffset = String(2 * Math.PI * 110); arc.classList.remove('arc-inhale','arc-hold','arc-exhale'); }
+    const orb = document.getElementById('breath-orb');
+    if (orb) orb.classList.remove('phase-inhale','phase-hold','phase-exhale');
     const bt = document.getElementById('breath-time');
     if (bt) bt.textContent = '—';
     const bl = document.getElementById('breath-label');
-    if (bl) bl.textContent = 'seg';
-    ['inhale','hold','exhale'].forEach(p => {
-      const b = document.getElementById('bar-' + p);
-      if (b) b.style.width = '0%';
-      const ph = document.getElementById('ph-' + p);
-      if (ph) ph.classList.remove('ph-active');
-    });
+    if (bl) bl.textContent = '—';
     const cc = document.getElementById('cycle-counter');
     if (cc) cc.textContent = '0 ciclos completados';
     const bb = document.getElementById('btn-breath');
@@ -1031,16 +1143,31 @@
     let phaseStart = 0, cycleStart = 0;
     let tickHandle = null;
 
-    function activatePhase(idx) {
-      // 1. Announce immediately — voice fires at phase start, not mid-phase
-      speak(PHASES[idx].text);
+    const ARC_FULL = 2 * Math.PI * 110;  // r=110
 
-      // 2. Update label + highlight
-      lblEl.textContent = PHASES[idx].text;
-      PHASES.forEach((p, i) => {
-        document.getElementById('ph-' + p.id).classList.toggle('ph-active', i === idx);
-        document.getElementById(p.barId).style.width = i < idx ? '100%' : '0%';
-      });
+    function activatePhase(idx) {
+      const phase = PHASES[idx];
+
+      // 1. Speak at the exact moment the phase starts
+      speak(phase.text);
+
+      // 2. Label
+      lblEl.textContent = phase.text;
+      timeEl.textContent = phase.secs;
+
+      // 3. Orb: remove all phase classes, add current
+      const orb = document.getElementById('breath-orb');
+      orb.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
+      void orb.offsetWidth; // force reflow so animation restarts
+      orb.classList.add('phase-' + phase.id);
+
+      // 4. Arc color
+      arc.classList.remove('arc-inhale', 'arc-hold', 'arc-exhale');
+      arc.classList.add('arc-' + phase.id);
+
+      // 5. Reset arc to empty, will fill during tick
+      arc.style.strokeDasharray  = ARC_FULL;
+      arc.style.strokeDashoffset = ARC_FULL;
 
       phaseStart = performance.now();
     }
@@ -1052,16 +1179,18 @@
       const cycleDur  = TOTAL_SECS * 1000;
       const cycleEl_  = now - cycleStart;
 
-      // Update progress bar for current phase
-      const pct = Math.min(phaseEl / phaseDur, 1);
-      document.getElementById(PHASES[phaseIdx].barId).style.width = Math.round(pct * 100) + '%';
+
 
       // Countdown number
       const secsLeft = Math.max(Math.ceil((phaseDur - phaseEl) / 1000), 0);
       timeEl.textContent = secsLeft;
 
       // Ring arc
-      arc.style.strokeDashoffset = CIRC * (1 - Math.min(cycleEl_ / cycleDur, 1));
+      // Arc fills across the current phase duration (not full cycle)
+      const phaseDurFull = PHASES[phaseIdx].secs * 1000;
+      const phaseFill = Math.min(phaseEl / phaseDurFull, 1);
+      const arcFull = 2 * Math.PI * 110;
+      arc.style.strokeDashoffset = arcFull * (1 - phaseFill);
 
       // Phase done?
       if (phaseEl >= phaseDur) {
@@ -1075,11 +1204,10 @@
 
           if (cycles >= 3) {
             clearTimeout(tickHandle); tickHandle = null;
-            PHASES.forEach(p => {
-              document.getElementById(p.barId).style.width = '100%';
-              document.getElementById('ph-' + p.id).classList.remove('ph-active');
-            });
-            timeEl.textContent = ''; lblEl.textContent = '';
+            // Reset orb
+            const orb = document.getElementById('breath-orb');
+            orb.classList.remove('phase-inhale','phase-hold','phase-exhale');
+            timeEl.textContent = ''; lblEl.textContent = 'Listo';
             arc.style.strokeDashoffset = 0;
             btn.textContent = '3 ciclos completados';
             speak('Completado. Muy bien.');
