@@ -929,32 +929,54 @@
     if (!all.length) return;
     sel.innerHTML = '';
 
-    // Preferred names (Raul first)
     const PREFER = ['raul','pablo','jorge','diego','juan','carlos','miguel','antonio','jose','david'];
 
-    // Sort: Spanish voices first, preferred names at top
-    const sorted = [...all].sort((a, b) => {
-      const aEs = a.lang.startsWith('es') ? 0 : 1;
-      const bEs = b.lang.startsWith('es') ? 0 : 1;
-      if (aEs !== bEs) return aEs - bEs;
+    const esVoices    = [...all].filter(v => v.lang.startsWith('es'));
+    const otherVoices = [...all].filter(v => !v.lang.startsWith('es'));
+
+    // Sort Spanish: preferred names first, then alphabetical
+    esVoices.sort((a, b) => {
       const aP = PREFER.findIndex(h => a.name.toLowerCase().includes(h));
       const bP = PREFER.findIndex(h => b.name.toLowerCase().includes(h));
-      const aRank = aP === -1 ? 99 : aP;
-      const bRank = bP === -1 ? 99 : bP;
-      return aRank - bRank;
+      const aR = aP === -1 ? 99 : aP;
+      const bR = bP === -1 ? 99 : bP;
+      if (aR !== bR) return aR - bR;
+      return a.name.localeCompare(b.name);
     });
 
-    sorted.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v.name;
-      opt.textContent = v.name + ' (' + v.lang + ')';
-      sel.appendChild(opt);
-    });
+    // Sort others alphabetically
+    otherVoices.sort((a, b) => a.name.localeCompare(b.name));
 
-    // Auto-select best voice
-    const best = sorted.find(v => v.lang.startsWith('es') && PREFER.some(h => v.name.toLowerCase().includes(h)))
-                 || sorted.find(v => v.lang.startsWith('es'))
-                 || sorted[0];
+    // Add Spanish group
+    if (esVoices.length) {
+      const grp = document.createElement('optgroup');
+      grp.label = '— Español —';
+      esVoices.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.name;
+        opt.textContent = v.name + ' (' + v.lang + ')';
+        grp.appendChild(opt);
+      });
+      sel.appendChild(grp);
+    }
+
+    // Add all other languages
+    if (otherVoices.length) {
+      const grp = document.createElement('optgroup');
+      grp.label = '— Otros idiomas —';
+      otherVoices.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.name;
+        opt.textContent = v.name + ' (' + v.lang + ')';
+        grp.appendChild(opt);
+      });
+      sel.appendChild(grp);
+    }
+
+    // Auto-select best Spanish voice
+    const best = esVoices.find(v => PREFER.some(h => v.name.toLowerCase().includes(h)))
+                 || esVoices[0]
+                 || all[0];
     if (best) { sel.value = best.name; _selectedVoice = best; }
   }
 
